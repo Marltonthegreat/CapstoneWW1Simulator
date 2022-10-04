@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3945305929340942881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5029361379039937506}
+  - component: {fileID: 4474940414704456073}
+  m_Layer: 0
+  m_Name: TerrainEmpty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5029361379039937506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945305929340942881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4474940414704456073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945305929340942881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 596f44e1ee48de04288a3ec826dfa644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sockets:
+  - Name: posX
+    OppositeName: negX
+    Type: -1
+  - Name: posZ
+    OppositeName: negZ
+    Type: -1
+  - Name: negX
+    OppositeName: posX
+    Type: -1
+  - Name: negZ
+    OppositeName: posZ
+    Type: -1
+  - Name: posY
+    OppositeName: negY
+    Type: -1
+  - Name: negY
+    OppositeName: posY
+    Type: -1
+  NeighborLists:
+  - Name: posX
+    ValidNeighbors:
+    - {fileID: 4474940414704456073}
+  - Name: posZ
+    ValidNeighbors:
+    - {fileID: 4474940414704456073}
+  - Name: negX
+    ValidNeighbors:
+    - {fileID: 4474940414704456073}
+  - Name: negZ
+    ValidNeighbors:
+    - {fileID: 4474940414704456073}
+  - Name: posY
+    ValidNeighbors:
+    - {fileID: 4474940414704456073}
+  - Name: negY
+    ValidNeighbors:
+    - {fileID: 4474940414704456073}
+  xOffset: 0
+  yOffset: 0
+  zOffset: 0
