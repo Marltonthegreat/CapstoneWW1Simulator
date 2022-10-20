@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 3de6d8dcd56673d419151cc3755dc594, type: 2}
 --- !u!1 &169418720
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +550,44 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
+--- !u!1 &740679527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8426283489597013716, guid: 4f7c1a255eb376f45874193cbb006a23,
+    type: 3}
+  m_PrefabInstance: {fileID: 8426283489447508888}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &740679532
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740679527}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &875827229 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9013202574047353141, guid: 4f7c1a255eb376f45874193cbb006a23,
+    type: 3}
+  m_PrefabInstance: {fileID: 8426283489447508888}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baaacfb70fe2f79419cfbc8fea03d437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1387299501
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +605,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &1387299502
 MeshCollider:
@@ -660,6 +698,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: BaseAgent
       objectReference: {fileID: 0}
+    - target: {fileID: 8426283487873269395, guid: 4f7c1a255eb376f45874193cbb006a23,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 740679532}
+    - target: {fileID: 8426283487873269395, guid: 4f7c1a255eb376f45874193cbb006a23,
+        type: 3}
+      propertyPath: health.value
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8426283487873269395, guid: 4f7c1a255eb376f45874193cbb006a23,
+        type: 3}
+      propertyPath: pathFollower
+      value: 
+      objectReference: {fileID: 875827229}
     - target: {fileID: 8426283487873269396, guid: 4f7c1a255eb376f45874193cbb006a23,
         type: 3}
       propertyPath: m_RootOrder
