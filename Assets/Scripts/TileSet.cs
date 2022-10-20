@@ -28,10 +28,12 @@ public class TileSet : MonoBehaviour
     {
         ResetValidNeighbors();
 
-        for (int i = 0; i < Terrain.Length; i++)
+        GenerateEmptyNeighbors();
+
+        for (int i = 1; i < Terrain.Length; i++)
         {
             if (Terrain[i] == null) continue;
-            for (int j = 0; j < Terrain.Length; j++)
+            for (int j = 1; j < Terrain.Length; j++)
             {
                 if (Terrain[j] == null) continue;
 
@@ -42,7 +44,6 @@ public class TileSet : MonoBehaviour
                     if (SocketA.Type.Contains('-'))
                     {
                         AddNeighbor(Terrain[i], Terrain[0], SocketA);
-                        AddNeighbor(Terrain[0], Terrain[i], SocketB);
                     }
                     else if (SocketA.Type.Contains('s') && SocketB.Type.Contains('s') && SocketA.Type.Trim().Equals(SocketB.Type.Trim()))
                     {
@@ -55,6 +56,21 @@ public class TileSet : MonoBehaviour
 
                 }
             }
+        }
+    }
+
+    private void GenerateEmptyNeighbors()
+    {
+        var soc = Terrain[0].Sockets.First(s => s.Name.Equals("negY"));
+
+        foreach (TerrainSection.Socket socket in Terrain[0].Sockets)
+        {
+            AddNeighbor(Terrain[0], Terrain[0], socket);
+        }
+
+        for (int i = 1; i < Terrain.Length; i++)
+        {
+            AddNeighbor(Terrain[0], Terrain[i], soc);
         }
     }
 

@@ -9,6 +9,7 @@ public class TerrainManager : MonoBehaviour
 {
     private class Tile
     {
+
         public bool IsChecked = false;
         public bool Collapsed = false;
         public List<int> Entropy;
@@ -80,6 +81,7 @@ public class TerrainManager : MonoBehaviour
         public int z;
     }
 
+    [SerializeField] float DelayTime = 0;
     [SerializeField] TileSet tileSet;
 
     [SerializeField] int tileDim;
@@ -89,8 +91,17 @@ public class TerrainManager : MonoBehaviour
 
     private Tile[] tiles;
 
+    private bool initialized = false;
+
     private void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
+        UnityEngine.Random.InitState(29);
+
         tileSet.GenerateValidNeighbors();
 
         SetupTiles();
@@ -150,8 +161,10 @@ public class TerrainManager : MonoBehaviour
                 }
             }
             RenderTerrain();
-            yield return null;
+            yield return new WaitForSeconds(DelayTime);
         } while (generating && !skip);
+
+        world.GetComponent<MeshCombiner>().CombineMeshes();
 
     }
 
@@ -315,4 +328,5 @@ public class TerrainManager : MonoBehaviour
             }
         }
     }
+
 }
