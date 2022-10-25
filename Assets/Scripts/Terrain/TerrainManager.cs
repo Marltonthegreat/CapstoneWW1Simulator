@@ -141,11 +141,11 @@ public class TerrainManager : MonoBehaviour
             // Pick from lowest entropy and collapse it
             var index = UnityEngine.Random.Range(0, lowestEntropy.Length);
             var chosenTile = lowestEntropy[index];
-            chosenTile.Collapsed = true;
 
             index = UnityEngine.Random.Range(0, chosenTile.Entropy.Count);
             var chosenState = chosenTile.Entropy[index];
             chosenTile.Entropy = new List<int> { chosenState };
+            chosenTile.Collapsed = true;
 
             chosenTile.UpdateNeighborList(tileSet);
 
