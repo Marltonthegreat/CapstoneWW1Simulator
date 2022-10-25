@@ -20,14 +20,14 @@ public class NavMeshSelector : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
             {
-                Agent[] agents = Agent.GetAgents();
+                /*Agent[] agents = Agent.GetAgents();
                 foreach (var agent in agents)
                 {
                     if (agent.TryGetComponent(out AgentMovement movement))
                     {
                         movement.MoveTowards(hitInfo.point);
                     }
-                }
+                }*/
             }
         }
     }
