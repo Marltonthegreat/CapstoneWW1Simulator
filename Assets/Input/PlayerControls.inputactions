@@ -1,0 +1,51 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "OrdersMode",
+            "id": "dfe841d7-0140-40d8-9d89-b878bdeb8176",
+            "actions": [
+                {
+                    "name": "IssueOrder",
+                    "type": "Button",
+                    "id": "10354dac-a86b-483e-8e1d-6335cdd15e19",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7892ec35-1c2e-4366-a578-52eecea7e85d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "IssueOrder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "MouseKeyboard",
+            "bindingGroup": "MouseKeyboard",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

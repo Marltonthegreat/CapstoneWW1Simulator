@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RetreatOrder : Order
 {
-    public RetreatOrder(GameObject markerPrefab, string name, Vector3 location, int teamID) : base(markerPrefab, name, location, teamID)
+    public RetreatOrder(string name, GameObject markerPrefab, Vector3 location, int playerID) : base(name, markerPrefab, location, playerID)
     {
     }
 }

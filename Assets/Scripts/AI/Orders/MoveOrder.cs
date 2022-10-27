@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveOrder : MonoBehaviour
+public class MoveOrder : Order
 {
-    // Start is called before the first frame update
-    void Start()
+    public MoveOrder(string name, GameObject markerPrefab, Vector3 location, int playerID) : base(name, markerPrefab, location, playerID)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
