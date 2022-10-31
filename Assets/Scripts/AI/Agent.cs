@@ -48,6 +48,8 @@ public class Agent : MonoBehaviour
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new BoolCondition(hasOrder, true), new FloatCondition(health, Condition.Predicate.GREATER, criticalHealth) }), typeof(OrderState).Name);
 
+        stateMachine.AddTransition(typeof(OrderState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS, criticalHealth) }), typeof(IdleState).Name);
+        stateMachine.AddTransition(typeof(OrderState).Name, new Transition(new Condition[] { new BoolCondition(hasOrder, false) }), typeof(IdleState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.GREATER, 30) }), typeof(ChaseState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 30) }), typeof(RetreatState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
@@ -89,9 +91,16 @@ public class Agent : MonoBehaviour
 
     public void GetOrder()
     {
-        CurrentOrder = GameManager.Instance.FindPlayerByID(PlayerID).StandingOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude > (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+        var playerOrders = GameManager.Instance.FindPlayerByID(PlayerID).StandingOrders;
+        if (playerOrders.Count == 0) return;
 
-        if (CurrentOrder != null) hasOrder.value = true;
+        CurrentOrder = playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude > (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+
+        if (CurrentOrder != null)
+        {
+            hasOrder.value = true;
+            stateMachine.StateFromType<OrderState>().destination = CurrentOrder.Location;
+        }
     }
 
     private void OnGUI()

@@ -77,6 +77,19 @@ public class StateMachine
         return null;
     }
 
+    public T StateFromType<T>() where T : State
+    {
+        foreach (var state in stateTransitions)
+        {
+            if (state.Key.GetType().Equals(typeof(T)))
+            {
+                return (T)state.Key;
+            }
+        }
+
+        return null;
+    }
+
     public string GetStateName()
     {
         return (currentState == null) ? null : currentState.name;

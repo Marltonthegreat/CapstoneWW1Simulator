@@ -423,7 +423,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 170516530}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1849017287}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ChangeOrderType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Move
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &170516530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,7 +1005,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 468315889}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1849017287}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ChangeOrderType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Attack
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &468315889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,7 +1139,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 774280025}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1849017287}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ChangeOrderType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Retreat
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &774280025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1693,6 +1729,12 @@ MonoBehaviour:
   m_DefaultActionMap: OrdersMode
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!195 &1564459813 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 653215301307850149, guid: 3abf30d1ed4d21c49ad8a4929c142be2,
+    type: 3}
+  m_PrefabInstance: {fileID: 3365046690814933423}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1849017286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1793,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 653215301307850148, guid: 3abf30d1ed4d21c49ad8a4929c142be2,
+        type: 3}
+      propertyPath: navMeshAgent
+      value: 
+      objectReference: {fileID: 1564459813}
     - target: {fileID: 2807108986443394735, guid: 3abf30d1ed4d21c49ad8a4929c142be2,
         type: 3}
       propertyPath: m_ApplyRootMotion

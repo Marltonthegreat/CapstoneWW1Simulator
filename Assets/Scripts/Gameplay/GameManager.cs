@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [System.Serializable]
     public enum OrderType
     {
         Move,
@@ -45,8 +46,24 @@ public class GameManager : Singleton<GameManager>
         if (order != null) AllStandingOrders.Add(order);
     }
 
-    public void ChangeOrderType(OrderType type)
+    public void ChangeOrderType(string name)
     {
+        if (CurrentOrderType.ToString().Equals(name)) return;
+
+        OrderType type = CurrentOrderType;
+        switch (name)
+        {
+            case "Attack":
+                type = OrderType.Attack;
+                break;
+            case "Move":
+                type = OrderType.Move;
+                break;
+            case "Retreat":
+                type = OrderType.Retreat;
+                break;
+        }
+        
         CurrentOrderType = type;
     }
 
