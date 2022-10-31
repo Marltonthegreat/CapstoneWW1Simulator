@@ -10,6 +10,8 @@ public abstract class Order
         Name = name;
         Location = location;
         PlayerID = playerID;
+
+        GameObject.Instantiate(markerPrefab, location, Quaternion.AngleAxis(0, Vector3.up));
     }
 
     public delegate void OnChange();

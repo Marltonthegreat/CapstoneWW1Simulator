@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class Agent : MonoBehaviour
 
     public BoolRef enemySeen;
     public BoolRef atDestination;
+    public BoolRef hasOrder;
     public FloatRef enemyDistance;
     public FloatRef health;
     public FloatRef criticalHealth;
@@ -23,11 +25,17 @@ public class Agent : MonoBehaviour
     public float attackDistance = 5;
     public float attackDelay = 5;
 
+    public int PlayerID { get; }
+    public int TeamID { get; }
+
     public GameObject enemy { get; set; }
+
+    public Order CurrentOrder;
 
     private void Start()
     {
         stateMachine.AddState(new IdleState(this, typeof(IdleState).Name));
+        stateMachine.AddState(new OrderState(this, typeof(OrderState).Name));
         //stateMachine.AddState(new PatrolState(this, typeof(PatrolState).Name));
         stateMachine.AddState(new ChaseState(this, typeof(ChaseState).Name));
         stateMachine.AddState(new DeathState(this, typeof(DeathState).Name));
@@ -38,6 +46,7 @@ public class Agent : MonoBehaviour
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, criticalHealth) }), typeof(RetreatState).Name);
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.GREATER, criticalHealth) }), typeof(ChaseState).Name);
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
+        stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new BoolCondition(hasOrder, true), new FloatCondition(health, Condition.Predicate.GREATER, criticalHealth) }), typeof(OrderState).Name);
 
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.GREATER, 30) }), typeof(ChaseState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 30) }), typeof(RetreatState).Name);
@@ -69,11 +78,20 @@ public class Agent : MonoBehaviour
         enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
         enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
 
+        if (!hasOrder) GetOrder();
+
         timer.value -= Time.deltaTime;
 
         stateMachine.Update();
 
         animator.SetFloat("speed", movement.velocity.magnitude);
+    }
+
+    public void GetOrder()
+    {
+        CurrentOrder = GameManager.Instance.FindPlayerByID(PlayerID).StandingOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude > (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+
+        if (CurrentOrder != null) hasOrder.value = true;
     }
 
     private void OnGUI()

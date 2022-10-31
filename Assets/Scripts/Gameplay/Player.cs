@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
         TeamID = teamID;
     }
 
+    [SerializeField] LayerMask layerMask;
     [HideInInspector] public List<Order> StandingOrders;
     [HideInInspector] public List<Agent> Units;
 
@@ -27,7 +29,11 @@ public class Player : MonoBehaviour
 
     public void OnIssueOrder()
     {
-        GameManager.Instance.CreateOrder(Vector3.zero);
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
+        {
+            GameManager.Instance.CreateOrder(hitInfo.point);
+        }
     }
 
     public void AddUnit(Agent unit)

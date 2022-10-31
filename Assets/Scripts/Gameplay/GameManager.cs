@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,12 @@ public class GameManager : Singleton<GameManager>
     }
 
     public OrderType CurrentOrderType { get; private set; }
-    public List<Player> players = new();
-    public List<Order> AllStandingOrders = new();
+    [HideInInspector] public List<Player> players = new();
+    [HideInInspector] public List<Order> AllStandingOrders = new();
+
+    [SerializeField] GameObject MoveMarkerPrefab;
+    [SerializeField] GameObject AttackMarkerPrefab;
+    [SerializeField] GameObject RetreatMarkerPrefab;
 
     public void CreateOrder(Vector3 location)
     {
@@ -22,15 +27,15 @@ public class GameManager : Singleton<GameManager>
         switch (CurrentOrderType)
         {
             case OrderType.Move:
-                order = new MoveOrder("MoveOrder1", null, location, 0);
+                order = new MoveOrder("MoveOrder1", MoveMarkerPrefab, location, 0);
                 players[0].AddOrder(order);
                 break;
             case OrderType.Attack:
-                order = new AttackOrder("AttackOrder1", null, location, 0);
+                order = new AttackOrder("AttackOrder1", AttackMarkerPrefab, location, 0);
                 players[0].AddOrder(order);
                 break;
             case OrderType.Retreat:
-                order = new RetreatOrder("RetreatOrder1", null, location, 0);
+                order = new RetreatOrder("RetreatOrder1", RetreatMarkerPrefab, location, 0);
                 players[0].AddOrder(order);
                 break;
             default:
@@ -43,5 +48,10 @@ public class GameManager : Singleton<GameManager>
     public void ChangeOrderType(OrderType type)
     {
         CurrentOrderType = type;
+    }
+
+    public Player FindPlayerByID(int ID)
+    {
+        return players.FirstOrDefault(p => p.PlayerID == ID);
     }
 }
