@@ -16,21 +16,14 @@ public class OrderState : State
 
     public override void OnUpdate()
     {
-        /*owner.pathFollower.Move(owner.movement);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if ((owner.transform.position - destination).magnitude <= 5)
         {
-            owner.stateMachine.SetState(owner.stateMachine.StateFromName(typeof(IdleState).Name));
-        }*/
+            Debug.Log("close");
+        }
     }
 
     public override void OnExit()
     {
         owner.movement.Stop();
-    }
-
-    public void SetDestination()
-    {
-
     }
 }

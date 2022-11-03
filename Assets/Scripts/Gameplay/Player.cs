@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField] LayerMask layerMask;
+    [SerializeField] GameObject unitPrefab;
+    [SerializeField] Transform spawnTransform;
+
     [HideInInspector] public List<Order> StandingOrders;
     [HideInInspector] public List<Agent> Units;
 
@@ -34,6 +37,12 @@ public class Player : MonoBehaviour
         {
             GameManager.Instance.CreateOrder(hitInfo.point);
         }
+    }
+
+    public void OnSpawnUnit()
+    {
+        var go = Instantiate(unitPrefab, spawnTransform.position, spawnTransform.rotation);
+        AddUnit(go.GetComponent<Agent>());
     }
 
     public void AddUnit(Agent unit)

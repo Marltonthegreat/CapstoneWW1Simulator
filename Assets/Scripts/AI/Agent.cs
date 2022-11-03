@@ -80,6 +80,7 @@ public class Agent : MonoBehaviour
         enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
         enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
 
+        //Refactor how this works. Move order-related code to the Order State
         if (!hasOrder) GetOrder();
 
         timer.value -= Time.deltaTime;
@@ -103,13 +104,13 @@ public class Agent : MonoBehaviour
         }
     }
 
-    private void OnGUI()
-    {
-        Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
+    //private void OnGUI()
+    //{
+    //    Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
 
-        GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
-        GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"health: {health.value}");
-    }
+    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
+    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"health: {health.value}");
+    //}
 
     public static Agent[] GetAgents()
     {

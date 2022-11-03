@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf57b13dba45a8c4ab1cad27c158830d, type: 3}
   m_Name: AgentMovementData
   m_EditorClassIdentifier: 
-  maxSpeed: 12
-  minSpeed: 6
-  maxForce: 8
+  maxSpeed: 8
+  minSpeed: 4
+  maxForce: 2
   turnRate: 360
   orientToMovement: 1
