@@ -6,19 +6,20 @@ public class OrderState : State
 {
     public OrderState(Agent owner, string name) : base(owner, name) { }
 
-    public Vector3 destination;
+    public Vector3? destination;
 
     public override void OnEnter()
     {
         owner.movement.Resume();
-        owner.movement.MoveTowards(destination);
+        owner.movement.MoveTowards((Vector3)destination);
     }
 
     public override void OnUpdate()
     {
-        if ((owner.transform.position - destination).magnitude <= 5)
+        if ((owner.transform.position - (Vector3)destination).magnitude <= 5)
         {
-            Debug.Log("close");
+            owner.atDestination.value = true;
+            owner.movement.Stop();
         }
     }
 

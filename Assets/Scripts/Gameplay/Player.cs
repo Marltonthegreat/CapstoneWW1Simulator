@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
     public void AddUnit(Agent unit)
     {
         if (!Units.Contains(unit)) Units.Add(unit);
+        unit.TeamID = TeamID;
+        unit.PlayerID = PlayerID;
     }
     
     public void AddUnits(List<Agent> units)

@@ -25,12 +25,13 @@ public class Agent : MonoBehaviour
     public float attackDistance = 5;
     public float attackDelay = 5;
 
-    public int PlayerID { get; }
-    public int TeamID { get; }
+    public int PlayerID;
+    public int TeamID;
 
     public GameObject enemy { get; set; }
 
     public Order CurrentOrder;
+    public List<Order> CompletedOrders = new();
 
     private void Start()
     {
@@ -54,14 +55,35 @@ public class Agent : MonoBehaviour
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 30) }), typeof(RetreatState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
 
-        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, false) }), typeof(IdleState).Name);
-        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new FloatCondition(enemyDistance, Condition.Predicate.LESS_EQUAL, attackDistance), new FloatCondition(enemyHealth, Condition.Predicate.GREATER, 0) }), typeof(AttackState).Name);
-        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, criticalHealth) }), typeof(RetreatState).Name);
-        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
+        (
+            new Condition[] { new BoolCondition(enemySeen, false), new BoolCondition(hasOrder, false) }
+        ), typeof(IdleState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
+        (
+            new Condition[] { new FloatCondition(enemyDistance, Condition.Predicate.LESS_EQUAL, attackDistance), new FloatCondition(enemyHealth, Condition.Predicate.GREATER, 0) }
+        ), typeof(AttackState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
+        (
+            new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, criticalHealth) }
+        ), typeof(RetreatState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
+        (
+            new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }
+        ), typeof(DeathState).Name);
 
-        stateMachine.AddTransition(typeof(AttackState).Name, new Transition(new Condition[] { new FloatCondition(timer, Condition.Predicate.LESS_EQUAL, 0) }), typeof(ChaseState).Name);
-        stateMachine.AddTransition(typeof(AttackState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, criticalHealth) }), typeof(RetreatState).Name);
-        stateMachine.AddTransition(typeof(AttackState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
+        stateMachine.AddTransition(typeof(AttackState).Name, new Transition
+        (
+            new Condition[] { new FloatCondition(timer, Condition.Predicate.LESS_EQUAL, 0) }
+        ), typeof(ChaseState).Name);
+        stateMachine.AddTransition(typeof(AttackState).Name, new Transition
+        (
+            new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, criticalHealth) }
+        ), typeof(RetreatState).Name);
+        stateMachine.AddTransition(typeof(AttackState).Name, new Transition
+        (
+            new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }
+        ), typeof(DeathState).Name);
 
         stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(IdleState).Name);
         stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
@@ -75,13 +97,15 @@ public class Agent : MonoBehaviour
 
         // Enemy
         var enemies = perception.GetGameObjects();
+        if (enemies.Length != 0)enemies = enemies.Where(e => e.GetComponent<Agent>().TeamID != TeamID).ToArray();
+
         enemySeen.value = enemies.Length != 0;
         enemy = (enemies.Length != 0) ? enemies[0] : null;
         enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
         enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
 
-        //Refactor how this works. Move order-related code to the Order State
         if (!hasOrder) GetOrder();
+        else if (atDestination) CompleteOrder();
 
         timer.value -= Time.deltaTime;
 
@@ -93,9 +117,11 @@ public class Agent : MonoBehaviour
     public void GetOrder()
     {
         var playerOrders = GameManager.Instance.FindPlayerByID(PlayerID).StandingOrders;
+
+        playerOrders = playerOrders.Where(o => !CompletedOrders.Contains(o)).ToList();
         if (playerOrders.Count == 0) return;
 
-        CurrentOrder = playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude > (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+        CurrentOrder = playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
 
         if (CurrentOrder != null)
         {
@@ -104,13 +130,22 @@ public class Agent : MonoBehaviour
         }
     }
 
-    //private void OnGUI()
-    //{
-    //    Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
+    public void CompleteOrder()
+    {
+        atDestination.value = false;
+        hasOrder.value = false;
+        stateMachine.StateFromType<OrderState>().destination = null;
+        CompletedOrders.Add(CurrentOrder);
+        CurrentOrder = null;
+    }
 
-    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
+    private void OnGUI()
+    {
+        Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
+
+        GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
     //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"health: {health.value}");
-    //}
+    }
 
     public static Agent[] GetAgents()
     {
