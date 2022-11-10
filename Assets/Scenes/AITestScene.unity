@@ -486,6 +486,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GermanUnit (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2856306882802181133, guid: 03e3862122e139743a657f57c0c9cf45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2861639833272621453, guid: 03e3862122e139743a657f57c0c9cf45,
         type: 3}
       propertyPath: m_RootOrder
@@ -667,6 +672,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GermanUnit
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856306882802181133, guid: 03e3862122e139743a657f57c0c9cf45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2861639833272621453, guid: 03e3862122e139743a657f57c0c9cf45,
         type: 3}
@@ -1226,6 +1236,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GermanUnit (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2856306882802181133, guid: 03e3862122e139743a657f57c0c9cf45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2861639833272621453, guid: 03e3862122e139743a657f57c0c9cf45,
         type: 3}
       propertyPath: m_RootOrder
@@ -1438,6 +1453,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GermanUnit (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856306882802181133, guid: 03e3862122e139743a657f57c0c9cf45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2861639833272621453, guid: 03e3862122e139743a657f57c0c9cf45,
         type: 3}
@@ -1752,6 +1772,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GermanUnit (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856306882802181133, guid: 03e3862122e139743a657f57c0c9cf45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2861639833272621453, guid: 03e3862122e139743a657f57c0c9cf45,
         type: 3}

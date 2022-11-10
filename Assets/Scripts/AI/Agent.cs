@@ -139,13 +139,13 @@ public class Agent : MonoBehaviour
         CurrentOrder = null;
     }
 
-    private void OnGUI()
+    /*private void OnGUI()
     {
         Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
 
         GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
     //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"health: {health.value}");
-    }
+    }*/
 
     public static Agent[] GetAgents()
     {
