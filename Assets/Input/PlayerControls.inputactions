@@ -31,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnTrench",
+                    "type": "Button",
+                    "id": "9e0d3f22-f8fe-4ea3-9e95-75c74dbf9459",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SetMode",
+                    "type": "Button",
+                    "id": "5f2116d9-3f16-422b-b304-686b43f9a7a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -64,6 +82,28 @@
                     "processors": "",
                     "groups": "MouseKeyboard",
                     "action": "SpawnUnit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54387ba4-9218-4106-abea-919a4a102564",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnTrench",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "245c6bd5-1945-4675-82b5-8c9544954e4e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SetMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

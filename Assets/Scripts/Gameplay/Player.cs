@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     public int PlayerID { get; }
     public int TeamID { get; }
 
+    private bool BuildMode = true;
+
     private void Start()
     {
         StandingOrders = new();
@@ -32,10 +34,25 @@ public class Player : MonoBehaviour
 
     public void OnIssueOrder()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
+        if (!BuildMode)
         {
-            GameManager.Instance.CreateOrder(hitInfo.point);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
+            {
+                GameManager.Instance.CreateOrder(hitInfo.point);
+            }
+        }
+    }
+
+    public void OnSpawnTrench()
+    {
+        if (BuildMode)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
+            {
+                TrenchManager.Instance.SpawnTrench(hitInfo);
+            }
         }
     }
 
@@ -51,7 +68,7 @@ public class Player : MonoBehaviour
         unit.TeamID = TeamID;
         unit.PlayerID = PlayerID;
     }
-    
+
     public void AddUnits(List<Agent> units)
     {
         Units.AddRange(units.Where(u => !Units.Contains(u)));
@@ -75,5 +92,9 @@ public class Player : MonoBehaviour
     public void RemoveOrder(Order order)
     {
         StandingOrders.Remove(order);
+    }
+    public void OnSetMode()
+    {
+        BuildMode = !BuildMode;
     }
 }
