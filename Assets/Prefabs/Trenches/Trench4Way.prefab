@@ -108,9 +108,12 @@ GameObject:
   m_Component:
   - component: {fileID: 203322446552261090}
   - component: {fileID: 2836370355416128024}
+  - component: {fileID: 1341194747665147060}
+  - component: {fileID: -8591062361128255724}
+  - component: {fileID: 6209570798133209690}
   m_Layer: 0
   m_Name: Trench4Way
-  m_TagString: Untagged
+  m_TagString: Trench
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,6 +155,45 @@ MonoBehaviour:
   - {fileID: 6644117317061123857}
   - {fileID: 2224006989590517139}
   - {fileID: 1905759280377805919}
+--- !u!65 &1341194747665147060
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2243983719626072622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.9, y: 2.5, z: 4.96}
+  m_Center: {x: 0, y: -0.20000005, z: 0}
+--- !u!65 &-8591062361128255724
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2243983719626072622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 2.5, z: 1.4}
+  m_Center: {x: 0, y: -0.2, z: 3.18}
+--- !u!65 &6209570798133209690
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2243983719626072622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 2.5, z: 1.4}
+  m_Center: {x: 0, y: -0.2, z: -3.18}
 --- !u!1001 &397386061290400364
 PrefabInstance:
   m_ObjectHideFlags: 0

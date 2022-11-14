@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Unit
   - Connection
+  - Trench
   layers:
   - Default
   - TransparentFX
