@@ -108,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4136329803618187635}
   - component: {fileID: 929215399932910968}
+  - component: {fileID: 8363678106153567529}
   m_Layer: 0
   m_Name: TrenchStraight
   m_TagString: Untagged
@@ -148,6 +149,19 @@ MonoBehaviour:
   ConnectionNodes:
   - {fileID: 4182472030452311785}
   - {fileID: 7700757686775886764}
+--- !u!65 &8363678106153567529
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7580501313104200681}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 2.5, z: 12.5}
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!1001 &3704773281769211601
 PrefabInstance:
   m_ObjectHideFlags: 0

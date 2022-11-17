@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
             {
                 TrenchManager.Instance.SpawnTrench(hitInfo);
+                PerlinTerrain.Instance.BuildNavMesh();
             }
         }
     }
@@ -67,7 +68,6 @@ public class Player : MonoBehaviour
         if (!Units.Contains(unit)) Units.Add(unit);
         unit.TeamID = TeamID;
         unit.PlayerID = PlayerID;
-        unit.SetSquadLeader(Units.ToArray());
     }
 
     public void AddUnits(List<Agent> units)

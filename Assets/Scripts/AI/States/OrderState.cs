@@ -11,12 +11,12 @@ public class OrderState : State
     public override void OnEnter()
     {
         owner.movement.Resume();
-        owner.movement.MoveTowards((Vector3)destination);
+        owner.movement.MoveTowards(destination.Value);
     }
 
     public override void OnUpdate()
     {
-        if ((owner.transform.position - (Vector3)destination).magnitude <= 5)
+        if ((owner.transform.position - destination.Value).magnitude <= 5)
         {
             owner.atDestination.value = true;
             owner.movement.Stop();

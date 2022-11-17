@@ -5,19 +5,22 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
-    private struct SquadLeader
+    private struct Squad
     {
         public bool isLeader;
 
         public Agent squadLeader;
+
         public delegate void IssueOrder(Order order);
         public event IssueOrder issueOrder;
+        public Order standingOrder;
 
         public int squadSize;
         public static int MAX_SQUAD_SIZE = 5;
 
-        public void IssueOrderToSubs(Order order)
+        public void IssueOrderToMembers(Order order)
         {
+            standingOrder = order;
             issueOrder(order);
         }
     }
@@ -47,7 +50,7 @@ public class Agent : MonoBehaviour
 
     public GameObject enemy { get; set; }
 
-    private SquadLeader squadLeader;
+    private Squad squad;
     public Order CurrentOrder;
     public List<Order> CompletedOrders = new();
 
@@ -69,7 +72,7 @@ public class Agent : MonoBehaviour
         enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
         enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
 
-        if (!hasOrder && squadLeader.isLeader) GetOrder();
+        if (!hasOrder && squad.isLeader) GetOrder();
         else if (atDestination) CompleteOrder();
 
         timer.value -= Time.deltaTime;
@@ -84,6 +87,7 @@ public class Agent : MonoBehaviour
         InstantiateStates();
         InstantiateTransitions();
 
+        SetSquadLeader();
         stateMachine.SetState(stateMachine.StateFromName(typeof(IdleState).Name));
     }
 
@@ -154,11 +158,15 @@ public class Agent : MonoBehaviour
         playerOrders = playerOrders.Where(o => !CompletedOrders.Contains(o)).ToList();
         if (playerOrders.Count == 0) return;
 
-        SetOrder(playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2));
+        var order = playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+
+        squad.IssueOrderToMembers(order);
     }
 
     public void SetOrder(Order order)
     {
+        stateMachine.SetState(stateMachine.StateFromName(typeof(IdleState).Name));
+
         CurrentOrder = order;
 
         if (CurrentOrder != null)
@@ -177,28 +185,34 @@ public class Agent : MonoBehaviour
         CurrentOrder = null;
     }
 
-    public void SetSquadLeader(Agent[] units)
+    public void SetSquadLeader()
     {
-        var leader = units.FirstOrDefault(u => u.squadLeader.isLeader && u.squadLeader.squadSize != SquadLeader.MAX_SQUAD_SIZE);
+        var units = GameManager.Instance.FindPlayerByID(PlayerID).Units;
+        var leader = units.FirstOrDefault(u => u.squad.isLeader && u.squad.squadSize != Squad.MAX_SQUAD_SIZE);
 
-        if (leader != null)
+        if (leader == null)
         {
-            squadLeader.isLeader = true;
+            squad.isLeader = true;
+            squad.squadSize++;
+            squad.issueOrder += SetOrder;
         }
         else
         {
-            squadLeader.squadLeader = leader;
-            squadLeader.squadSize++;
+            squad.squadLeader = leader;
+            leader.squad.squadSize++;
+            leader.squad.issueOrder += SetOrder;
+            SetOrder(leader.squad.standingOrder);
         }
     }
 
-    /*private void OnGUI()
-    {
-        Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
+    //private void OnGUI()
+    //{
+    //    Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
 
-        GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
-    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"health: {health.value}");
-    }*/
+    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
+    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"Has Order: {hasOrder.value}");
+    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 20, 300, 20), $"health: {health.value}");
+    //}
 
     public static Agent[] GetAgents()
     {

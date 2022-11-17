@@ -170,6 +170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5172829133990368877}
   - component: {fileID: 604204476294060125}
+  - component: {fileID: 2462925219989313807}
   m_Layer: 0
   m_Name: TrenchZag
   m_TagString: Untagged
@@ -210,3 +211,16 @@ MonoBehaviour:
   ConnectionNodes:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!65 &2462925219989313807
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094755164004705167}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.1, y: 2.5, z: 10.4}
+  m_Center: {x: 1.2, y: -0.25, z: 3.7}
