@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PerlinTerrainGen : MonoBehaviour
+public class PerlinTerrain : Singleton<PerlinTerrain>
 {
     Terrain terrain;
     public Unity.AI.Navigation.NavMeshSurface surface;
@@ -23,18 +23,40 @@ public class PerlinTerrainGen : MonoBehaviour
         offsetY = Random.Range(-1000f, 1000);
 
         terrain = GetComponent<Terrain>();
-        terrain.terrainData = GenerateTerrain(terrain.terrainData);
-        surface.BuildNavMesh();
+        //terrainCollider = GetComponent<TerrainCollider>();
+        BuildNavMesh();
     }
+
     private void Update()
     {
+        Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        UpdateHeight(position, -0.2f);
     }
+
+    private void UpdateHeight(Vector3 position, float delta)
+    {
+        // get vertices at position
+
+    }
+
+
+    public void BuildNavMesh()
+    {
+        surface.BuildNavMesh();
+    }
+
+    public void AdjustTerrain(GameObject go)
+    {
+        
+    }
+
     TerrainData GenerateTerrain(TerrainData terrainData)
     {
         terrainData.heightmapResolution = width + 1;
         terrainData.size = new Vector3(width, height, length);
 
         terrainData.SetHeights(0, 0, GenerateHeights());
+        //terrainData.hei
 
         return terrainData;
     }

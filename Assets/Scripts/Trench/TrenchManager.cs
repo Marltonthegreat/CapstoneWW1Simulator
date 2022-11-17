@@ -110,13 +110,19 @@ public class TrenchManager : Singleton<TrenchManager>
 
     public void SpawnTrench(RaycastHit raycastHit)
     {
+        GameObject trench;
+
         if (raycastHit.collider != null && raycastHit.collider.CompareTag("Connection"))
         {
-            Instantiate(SelectedTrench, raycastHit.collider.transform.position, raycastHit.collider.transform.rotation);
+            trench = Instantiate(SelectedTrench, raycastHit.collider.transform.position, raycastHit.collider.transform.rotation);
         }
         else
         {
-            Instantiate(SelectedTrench, raycastHit.point, Quaternion.AngleAxis(0, Vector3.forward));
+            trench = Instantiate(SelectedTrench, raycastHit.point, Quaternion.AngleAxis(0, Vector3.forward));
         }
+
+        PerlinTerrain.Instance.AdjustTerrain(trench);
     }
+
+    
 }
