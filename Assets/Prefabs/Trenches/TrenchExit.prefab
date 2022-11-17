@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1737881446410297544}
   - component: {fileID: 4289634201292194}
+  - component: {fileID: 5944851418621380008}
   m_Layer: 0
   m_Name: TrenchExit
   m_TagString: Untagged
@@ -48,6 +49,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectionNodes:
   - {fileID: 8843402695321191757}
+--- !u!65 &5944851418621380008
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142532548471864760}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.230944, y: 2.5, z: 3.4031665}
+  m_Center: {x: 0, y: 0, z: 0.40616906}
 --- !u!1 &5751465640528040803
 GameObject:
   m_ObjectHideFlags: 0

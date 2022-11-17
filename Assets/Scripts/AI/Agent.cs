@@ -13,6 +13,9 @@ public class Agent : MonoBehaviour
         public delegate void IssueOrder(Order order);
         public event IssueOrder issueOrder;
 
+        public int squadSize;
+        public static int MAX_SQUAD_SIZE = 5;
+
         public void IssueOrderToSubs(Order order)
         {
             issueOrder(order);
@@ -51,8 +54,6 @@ public class Agent : MonoBehaviour
     private void Start()
     {
         InstantiateAgent();
-
-        SetSquadLeader();
     }
 
     void Update()
@@ -153,7 +154,7 @@ public class Agent : MonoBehaviour
         playerOrders = playerOrders.Where(o => !CompletedOrders.Contains(o)).ToList();
         if (playerOrders.Count == 0) return;
 
-        SetOrder(playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+        SetOrder(playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2));
     }
 
     public void SetOrder(Order order)
@@ -174,6 +175,21 @@ public class Agent : MonoBehaviour
         stateMachine.StateFromType<OrderState>().destination = null;
         CompletedOrders.Add(CurrentOrder);
         CurrentOrder = null;
+    }
+
+    public void SetSquadLeader(Agent[] units)
+    {
+        var leader = units.FirstOrDefault(u => u.squadLeader.isLeader && u.squadLeader.squadSize != SquadLeader.MAX_SQUAD_SIZE);
+
+        if (leader != null)
+        {
+            squadLeader.isLeader = true;
+        }
+        else
+        {
+            squadLeader.squadLeader = leader;
+            squadLeader.squadSize++;
+        }
     }
 
     /*private void OnGUI()

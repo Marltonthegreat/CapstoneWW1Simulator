@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7488341795965944607}
   - component: {fileID: 1681245199049892756}
+  - component: {fileID: 8221480066452219418}
   m_Layer: 0
   m_Name: TrenchEnd
   m_TagString: Untagged
@@ -48,6 +49,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectionNodes:
   - {fileID: 3526295248286139371}
+--- !u!65 &8221480066452219418
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5098638134210015112}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.7, y: 1, z: 3.3}
+  m_Center: {x: 0, y: 0, z: -0.2}
 --- !u!1 &7657522707142721947
 GameObject:
   m_ObjectHideFlags: 0

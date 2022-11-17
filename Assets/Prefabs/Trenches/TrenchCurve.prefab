@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &495847133224155987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8731729623910198282}
+  - component: {fileID: 157512511520000258}
+  m_Layer: 0
+  m_Name: CurveCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8731729623910198282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495847133224155987}
+  m_LocalRotation: {x: -0, y: 0.25881904, z: -0, w: 0.9659259}
+  m_LocalPosition: {x: 0.33930707, y: 0.18350983, z: 3.5890694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1532741175014003125}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 30, z: 0}
+--- !u!65 &157512511520000258
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495847133224155987}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.11797, y: 2.5, z: 4.8}
+  m_Center: {x: 0.0000000665203, y: 0, z: 1.5}
 --- !u!1 &2855289777446134508
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,6 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1532741175014003125}
   - component: {fileID: 1702483965950354774}
+  - component: {fileID: 7001561665058107512}
   m_Layer: 0
   m_Name: TrenchCurve
   m_TagString: Untagged
@@ -130,6 +176,7 @@ Transform:
   - {fileID: 2861450831158441814}
   - {fileID: 6207818887825094216}
   - {fileID: 7550961386208752591}
+  - {fileID: 8731729623910198282}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -148,6 +195,19 @@ MonoBehaviour:
   ConnectionNodes:
   - {fileID: 6207818887825094216}
   - {fileID: 7550961386208752591}
+--- !u!65 &7001561665058107512
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387632013189461625}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 2.5, z: 5.3}
+  m_Center: {x: 0, y: 0, z: 1.2}
 --- !u!1001 &1121945617599464245
 PrefabInstance:
   m_ObjectHideFlags: 0
