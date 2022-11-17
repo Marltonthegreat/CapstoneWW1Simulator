@@ -5,6 +5,20 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
+    private struct SquadLeader
+    {
+        public bool isLeader;
+
+        public Agent squadLeader;
+        public delegate void IssueOrder(Order order);
+        public event IssueOrder issueOrder;
+
+        public void IssueOrderToSubs(Order order)
+        {
+            issueOrder(order);
+        }
+    }
+
     public AgentMovement movement;
     public Animator animator;
 
@@ -30,10 +44,49 @@ public class Agent : MonoBehaviour
 
     public GameObject enemy { get; set; }
 
+    private SquadLeader squadLeader;
     public Order CurrentOrder;
     public List<Order> CompletedOrders = new();
 
     private void Start()
+    {
+        InstantiateAgent();
+
+        SetSquadLeader();
+    }
+
+    void Update()
+    {
+        // Update parameters
+
+        // Enemy
+        var enemies = perception.GetGameObjects();
+        if (enemies.Length != 0) enemies = enemies.Where(e => e.GetComponent<Agent>().TeamID != TeamID).ToArray();
+
+        enemySeen.value = enemies.Length != 0;
+        enemy = (enemies.Length != 0) ? enemies[0] : null;
+        enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
+        enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
+
+        if (!hasOrder && squadLeader.isLeader) GetOrder();
+        else if (atDestination) CompleteOrder();
+
+        timer.value -= Time.deltaTime;
+
+        stateMachine.Update();
+
+        animator.SetFloat("speed", movement.velocity.magnitude);
+    }
+
+    private void InstantiateAgent()
+    {
+        InstantiateStates();
+        InstantiateTransitions();
+
+        stateMachine.SetState(stateMachine.StateFromName(typeof(IdleState).Name));
+    }
+
+    private void InstantiateStates()
     {
         stateMachine.AddState(new IdleState(this, typeof(IdleState).Name));
         stateMachine.AddState(new OrderState(this, typeof(OrderState).Name));
@@ -42,7 +95,10 @@ public class Agent : MonoBehaviour
         stateMachine.AddState(new DeathState(this, typeof(DeathState).Name));
         stateMachine.AddState(new AttackState(this, typeof(AttackState).Name));
         stateMachine.AddState(new RetreatState(this, typeof(RetreatState).Name));
+    }
 
+    private void InstantiateTransitions()
+    {
         //IdleState transitions
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, criticalHealth) }), typeof(RetreatState).Name);
         stateMachine.AddTransition(typeof(IdleState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.GREATER, criticalHealth) }), typeof(ChaseState).Name);
@@ -87,41 +143,22 @@ public class Agent : MonoBehaviour
 
         stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(IdleState).Name);
         stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
-
-        stateMachine.SetState(stateMachine.StateFromName(typeof(IdleState).Name));
-    }
-
-    void Update()
-    {
-        // Update parameters
-
-        // Enemy
-        var enemies = perception.GetGameObjects();
-        if (enemies.Length != 0)enemies = enemies.Where(e => e.GetComponent<Agent>().TeamID != TeamID).ToArray();
-
-        enemySeen.value = enemies.Length != 0;
-        enemy = (enemies.Length != 0) ? enemies[0] : null;
-        enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
-        enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
-
-        if (!hasOrder) GetOrder();
-        else if (atDestination) CompleteOrder();
-
-        timer.value -= Time.deltaTime;
-
-        stateMachine.Update();
-
-        animator.SetFloat("speed", movement.velocity.magnitude);
     }
 
     public void GetOrder()
     {
+
         var playerOrders = GameManager.Instance.FindPlayerByID(PlayerID).StandingOrders;
 
         playerOrders = playerOrders.Where(o => !CompletedOrders.Contains(o)).ToList();
         if (playerOrders.Count == 0) return;
 
-        CurrentOrder = playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+        SetOrder(playerOrders.Aggregate((so1, so2) => ((so1.Location - transform.position).sqrMagnitude < (so2.Location - transform.position).sqrMagnitude) ? so1 : so2);
+    }
+
+    public void SetOrder(Order order)
+    {
+        CurrentOrder = order;
 
         if (CurrentOrder != null)
         {
