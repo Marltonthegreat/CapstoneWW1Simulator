@@ -121,8 +121,22 @@ public class TrenchManager : Singleton<TrenchManager>
             trench = Instantiate(SelectedTrench, raycastHit.point, Quaternion.AngleAxis(0, Vector3.forward));
         }
 
-        PerlinTerrain.Instance.AdjustTerrain(trench);
+        Bounds[] bounds = GetBounds(trench);
+
+        PerlinTerrain.Instance.AdjustTerrain(bounds);
     }
 
-    
+    private Bounds[] GetBounds(GameObject go)
+    {
+        List<Bounds> bounds = new();
+        List<BoxCollider> colliders = new();
+        colliders.AddRange(go.GetComponentsInChildren<BoxCollider>());
+
+        foreach (var collider in colliders)
+        {
+            bounds.Add(collider.bounds);
+        }
+
+        return bounds.ToArray();
+    }
 }

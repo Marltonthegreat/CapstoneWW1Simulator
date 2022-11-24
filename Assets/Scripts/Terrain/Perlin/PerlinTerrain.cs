@@ -5,6 +5,8 @@ using UnityEngine;
 public class PerlinTerrain : Singleton<PerlinTerrain>
 {
     Terrain terrain;
+    TerrainCollider terrainCollider;
+    MeshFilter terrainMesh;
     public Unity.AI.Navigation.NavMeshSurface surface;
 
     public float height = 20f;
@@ -23,32 +25,58 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
         offsetY = Random.Range(-1000f, 1000);
 
         terrain = GetComponent<Terrain>();
-        //terrainCollider = GetComponent<TerrainCollider>();
+        terrainCollider = GetComponent<TerrainCollider>();
+        terrainMesh = GetComponent<MeshFilter>();
         BuildNavMesh();
     }
 
     private void Update()
     {
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        UpdateHeight(position, -0.2f);
     }
 
-    private void UpdateHeight(Vector3 position, float delta)
+    public void AdjustTerrain(Bounds[] bounds)
     {
-        // get vertices at position
+        // get all vertices
+        var vertices = terrain.;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            var pos = transform.TransformPoint(vertices[i]);
+
+            foreach (Bounds bound in bounds)
+            {
+                if (bound.Contains(pos))
+                {
+                    pos = new Vector3(pos.x, bound.min.y, pos.z);
+                }
+
+                pos = terrainMesh.transform.worldToLocalMatrix.MultiplyPoint(pos);
+            }
+
+        }
 
     }
 
+    private void OnTriggerEnter(Collider collision)
+    {
+        /*ContactPoint[] contacts = new ContactPoint[0];
+        collision.Get
+
+        List<Vector3> points = new();
+        List<Vector3> verts = new();
+
+        foreach(ContactPoint contact in contacts)
+        {
+            terrainMesh.mesh.GetVertices(verts);
+            points.Add(terrainCollider.ClosestPoint(contact.point));
+        }*/
+    }
 
     public void BuildNavMesh()
     {
         surface.BuildNavMesh();
     }
 
-    public void AdjustTerrain(GameObject go)
-    {
-        
-    }
 
     TerrainData GenerateTerrain(TerrainData terrainData)
     {
