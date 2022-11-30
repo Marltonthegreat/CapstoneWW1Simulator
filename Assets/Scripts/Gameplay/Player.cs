@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public List<Order> StandingOrders;
     [HideInInspector] public List<Agent> Units;
 
+    private Vector2 camMovement;
+
     public int PlayerID { get; }
     public int TeamID { get; }
 
@@ -32,7 +34,17 @@ public class Player : MonoBehaviour
         GameManager.Instance.players.Add(this);
     }
 
-    public void OnIssueOrder()
+    private void FixedUpdate()
+    {
+        transform.position = new Vector3(transform.position.x + camMovement.x, transform.position.y, transform.position.z + camMovement.y);
+    }
+
+    public void OnMovement(InputValue value)
+    {
+        camMovement = value.Get<Vector2>();
+    }
+
+    public void OnIssueCommand()
     {
         if (!BuildMode)
         {
@@ -42,11 +54,7 @@ public class Player : MonoBehaviour
                 GameManager.Instance.CreateOrder(hitInfo.point);
             }
         }
-    }
-
-    public void OnSpawnTrench()
-    {
-        if (BuildMode)
+        else
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -114,7 +115,9 @@ public class TrenchManager : Singleton<TrenchManager>
 
         if (raycastHit.collider != null && raycastHit.collider.CompareTag("Connection"))
         {
-            trench = Instantiate(SelectedTrench, raycastHit.collider.transform.position, raycastHit.collider.transform.rotation);
+            var node = SelectedTrench.GetComponent<Trench>().GetConnectionNode(2);
+
+            trench = Instantiate(SelectedTrench, raycastHit.collider.transform.position - node.position, raycastHit.collider.transform.rotation);
         }
         else
         {

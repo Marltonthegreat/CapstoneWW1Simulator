@@ -6,7 +6,7 @@
             "id": "dfe841d7-0140-40d8-9d89-b878bdeb8176",
             "actions": [
                 {
-                    "name": "IssueOrder",
+                    "name": "IssueCommand",
                     "type": "Button",
                     "id": "10354dac-a86b-483e-8e1d-6335cdd15e19",
                     "expectedControlType": "Button",
@@ -24,24 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SpawnUnit",
-                    "type": "Button",
-                    "id": "ae9967f1-e87e-4373-9a4e-8e4e3efee627",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SpawnTrench",
-                    "type": "Button",
-                    "id": "9e0d3f22-f8fe-4ea3-9e95-75c74dbf9459",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "SetMode",
                     "type": "Button",
                     "id": "5f2116d9-3f16-422b-b304-686b43f9a7a4",
@@ -49,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "de354720-eca1-4bd0-a248-93831d3494d2",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "b9416db8-2794-4342-ba9c-8ec26601255d",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -59,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseKeyboard",
-                    "action": "IssueOrder",
+                    "action": "IssueCommand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -76,34 +76,78 @@
                 },
                 {
                     "name": "",
-                    "id": "9645ed8d-b57c-4093-a072-33522fb653c4",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "MouseKeyboard",
-                    "action": "SpawnUnit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "54387ba4-9218-4106-abea-919a4a102564",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SpawnTrench",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "245c6bd5-1945-4675-82b5-8c9544954e4e",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "SetMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "39188ab6-c319-4754-956f-2fd4512652b8",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "724bac10-384a-4cdd-a2cd-3400cc53eacb",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "1f0b9abe-d875-47e2-8184-de24ea90fdab",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "3a37e86a-27a5-4694-940b-ab61da1abc77",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "43b13a72-fff6-46a4-ace9-677db5e07f00",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ba9e302b-d62f-4729-a7e1-78acaf8e7d9e",
+                    "path": "<Mouse>/scroll/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
