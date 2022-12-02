@@ -131,9 +131,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4228503680854459111}
+  - {fileID: 1251800252546474246}
   - {fileID: 2091888036530757582}
   - {fileID: 7909943774324041175}
-  - {fileID: 1251800252546474246}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -150,9 +150,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConnectionNodes:
+  - {fileID: 1251800252546474246}
   - {fileID: 2091888036530757582}
   - {fileID: 7909943774324041175}
-  - {fileID: 1251800252546474246}
 --- !u!65 &8190204489050954931
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -164,8 +164,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8.1440525, y: 10, z: 4.7}
-  m_Center: {x: 0.018006325, y: 3.3500004, z: 0.119999886}
+  m_Size: {x: 8.36013, y: 10, z: 4.7}
+  m_Center: {x: 0.018006563, y: 3.3500004, z: 0.119999886}
 --- !u!65 &1701292293792146170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -177,8 +177,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6, y: 10, z: 1.5800657}
-  m_Center: {x: 0, y: 3.3500004, z: 3.270033}
+  m_Size: {x: 6, y: 10, z: 1.7421241}
+  m_Center: {x: 0, y: 3.3500004, z: 3.351062}
 --- !u!114 &3527322020503566977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.083333336
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
@@ -219,7 +219,7 @@ PrefabInstance:
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -249,7 +249,7 @@ PrefabInstance:
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -264,7 +264,7 @@ PrefabInstance:
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -274,7 +274,7 @@ PrefabInstance:
     - target: {fileID: 6757565594467614108, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_Name
-      value: ConnectionNode2
+      value: ConnectionNode3
       objectReference: {fileID: 0}
     - target: {fileID: 6757565594467614108, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -299,7 +299,7 @@ PrefabInstance:
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -354,7 +354,7 @@ PrefabInstance:
     - target: {fileID: 6757565594467614108, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_Name
-      value: ConnectionNode1
+      value: ConnectionNode2
       objectReference: {fileID: 0}
     - target: {fileID: 6757565594467614108, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -379,7 +379,7 @@ PrefabInstance:
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6464752317350868349, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
@@ -434,7 +434,7 @@ PrefabInstance:
     - target: {fileID: 6757565594467614108, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}
       propertyPath: m_Name
-      value: ConnectionNode3
+      value: ConnectionNode1
       objectReference: {fileID: 0}
     - target: {fileID: 6757565594467614108, guid: 88d51f92933a8e941808cfa9041ed8c2,
         type: 3}

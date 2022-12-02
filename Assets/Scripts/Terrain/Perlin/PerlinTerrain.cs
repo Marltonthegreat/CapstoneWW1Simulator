@@ -10,83 +10,59 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
     MeshCollider meshCollider;
     public Unity.AI.Navigation.NavMeshSurface surface;
 
-    Vector3[] vertices;
-
     public float height = 20f;
-    public int width = 256;
-    public int length = 256;
+
+    public int width = 100;
+    public int length = 100;
+
+    private int xSize;
+    private int zSize;
+    [Min(1)] public int resolution = 1;
 
     public float scale = 20f;
 
-    private float offsetX = 100f;
-    private float offsetY = 100f;
-
     private void Start()
     {
-        offsetX = Random.Range(-1000f, 1000);
-        offsetY = Random.Range(-1000f, 1000);
-
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
+
+        xSize = width * resolution + 1;
+        zSize = length * resolution + 1;
 
         GenerateTerrain();
         BuildNavMesh();
     }
 
-    public void AdjustTerrain(Bounds[] bounds)
-    {
-        var verts = meshFilter.mesh.vertices;
-
-
-        for (int x = 0; x <= width; x++)
-        {
-            for (int z = 0; z <= length; z++)
-            {
-                foreach (Bounds bound in bounds)
-                {
-                    if (bound.Contains(meshFilter.transform.position + verts[x * (width + 1) + z]))
-                    {
-                        verts[x * (width + 1) + z] = new Vector3(verts[x * (width + 1) + z].x, bound.min.y, verts[x * (width + 1) + z].z);
-                    }
-                }
-            }
-        }
-
-        meshFilter.mesh.vertices = verts;
-        meshCollider.sharedMesh = meshFilter.mesh;
-    }
-
-    public void BuildNavMesh()
-    {
-        surface.BuildNavMesh();
-    }
-
     private void GenerateTerrain()
     {
-        vertices = new Vector3[(width + 1) * (length + 1)];
-        int[] triangles = new int[width * length * 6];
+        var vertices = new Vector3[xSize * zSize];
+        Color[] colors = new Color[vertices.Length];
+        int[] triangles = new int[vertices.Length * 6];
         var heights = GenerateHeights();
+        var colorVals = GenerateColors();
 
-        for (int x = 0; x <= width; x++)
+        for (int x = 0; x < xSize; x++)
         {
-            for (int z = 0; z <= length; z++)
+            for (int z = 0; z < zSize; z++)
             {
-                vertices[x * (width + 1) + z] = new Vector3(x, heights[x, z], z);
+                int index = x * (xSize) + z;
+                vertices[index] = new Vector3(x / (float)resolution, heights[x, z], z / (float)resolution);
+                colors[index] = new Color(0, colorVals[x, z], 0);
             }
         }
 
-        for (int x = 0, triIndex = 0, vertIndex = 0; x < width; x++, vertIndex++)
+        for (int x = 0, triIndex = 0, vertIndex = 0; x < xSize - 1; x++, vertIndex++)
         {
-            for (int y = 0; y < length; y++, triIndex += 6, vertIndex++)
+            for (int y = 0; y < zSize - 1; y++, triIndex += 6, vertIndex++)
             {
 
                 triangles[triIndex] = vertIndex;
                 triangles[triIndex + 1] = vertIndex + 1;
-                triangles[triIndex + 2] = vertIndex + length + 1;
+                triangles[triIndex + 2] = vertIndex + zSize;
 
                 triangles[triIndex + 3] = triangles[triIndex + 2];
                 triangles[triIndex + 4] = triangles[triIndex + 1];
-                triangles[triIndex + 5] = vertIndex + length + 2;
+                triangles[triIndex + 5] = vertIndex + zSize + 1;
             }
         }
 
@@ -97,31 +73,147 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
         mesh.name = "terrain";
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.colors = colors;
         mesh.RecalculateNormals();
 
         meshCollider.sharedMesh = mesh;
 
     }
 
+    public void AdjustTerrain(Bounds[] bounds)
+    {
+        var verts = meshFilter.mesh.vertices;
+        var colors = meshFilter.mesh.colors;
+
+
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int z = 0; z < zSize; z++)
+            {
+                foreach (Bounds bound in bounds)
+                {
+                    int index = x * xSize + z;
+                    if (bound.Contains(meshFilter.transform.position + verts[index]))
+                    {
+                        verts = ChangeHeights(verts, bound, index, x, z);
+
+                        colors = ChangeColors(colors, bound, index, x, z);
+                    }
+                }
+            }
+        }
+
+        meshFilter.mesh.vertices = verts;
+        meshFilter.mesh.colors = colors;
+        meshCollider.sharedMesh = meshFilter.mesh;
+        meshFilter.mesh.RecalculateNormals();
+    }
+
+    public void BuildNavMesh()
+    {
+        surface.BuildNavMesh();
+    }
+
     float[,] GenerateHeights()
     {
-        float[,] heights = new float[width + 1, length + 1];
-        for (int x = 0; x < width; x++)
+        float offsetX = Random.Range(-1000f, 1000);
+        float offsetZ = Random.Range(-1000f, 1000);
+
+        float[,] heights = new float[xSize, zSize];
+        for (int x = 0; x < xSize - 1; x++)
         {
-            for (int z = 0; z < length; z++)
+            for (int z = 0; z < zSize - 1; z++)
             {
-                heights[x, z] = CalcHeight(x, z);
+                heights[x, z] = CalcHeight(x, z, offsetX, offsetZ);
             }
         }
 
         return heights;
     }
 
-    float CalcHeight(int x, int z)
+    float[,] GenerateColors()
     {
-        float xCoord = (float)x / width * scale + offsetX;
-        float zCoord = (float)z / length * scale + offsetY;
+
+        float offsetX = Random.Range(-1000f, 1000);
+        float offsetZ = Random.Range(-1000f, 1000);
+
+        float[,] colors = new float[xSize, zSize];
+        for (int x = 0; x < xSize - 1; x++)
+        {
+            for (int z = 0; z < zSize - 1; z++)
+            {
+                colors[x, z] = CalcColor(x, z, offsetX, offsetZ);
+            }
+        }
+
+        return colors;
+    }
+
+    float CalcHeight(int x, int z, float offsetX, float offsetZ)
+    {
+        float xCoord = (float)x / xSize * scale + offsetX;
+        float zCoord = (float)z / zSize * scale + offsetZ;
 
         return Mathf.PerlinNoise(xCoord, zCoord) * height;
+    }
+
+    float CalcColor(int x, int z, float offsetX, float offsetZ)
+    {
+        float xCoord = (float)x / xSize * scale * 2 + offsetX;
+        float zCoord = (float)z / zSize * scale * 2 + offsetZ;
+
+        return Mathf.Clamp(Mathf.PerlinNoise(xCoord, zCoord) / 4 + .25f, .25f, .5f);
+    }
+
+    Vector3[] ChangeHeights(Vector3[] verts, Bounds bound, int index, int x, int z)
+    {
+        //var tempIndex = (x - 1) * (xSize) + z;
+        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+
+        //tempIndex = (x + 1) * (xSize) + z;
+        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+
+        //tempIndex = (x - 1) * (xSize) + z + 1;
+        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+
+        //tempIndex = (x + 1) * (xSize) + z + 1;
+        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+
+        //tempIndex = (x - 1) * (xSize) + z - 1;
+        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+
+        //tempIndex = (x + 1) * (xSize) + z - 1;
+        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+
+        verts[index] = new Vector3(verts[index].x, bound.min.y, verts[index].z);
+        return verts;
+    }
+
+    Color[] ChangeColors(Color[] colors, Bounds bound, int index, int x, int z)
+    {
+        float r = 38 / 255f;
+        float g = 21 / 255f;
+        float b = 6 / 255f;
+
+        var tempIndex = (x - 1) * (width + 1) + z;
+        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+
+        tempIndex = (x + 1) * (width + 1) + z;
+        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+
+        tempIndex = (x - 1) * (width + 1) + z + 1;
+        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+
+        tempIndex = (x + 1) * (width + 1) + z + 1;
+        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+
+        tempIndex = (x - 1) * (width + 1) + z - 1;
+        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+
+        tempIndex = (x + 1) * (width + 1) + z - 1;
+        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+
+        colors[index] = new Color(r, g, b);
+        return colors;
     }
 }

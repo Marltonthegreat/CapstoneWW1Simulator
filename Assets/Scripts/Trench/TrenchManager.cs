@@ -109,23 +109,27 @@ public class TrenchManager : Singleton<TrenchManager>
         }
     }
 
-    public void SpawnTrench(RaycastHit raycastHit, int rotation)
+    public void SpawnTrench(RaycastHit raycastHit, int rotIndex)
     {
         GameObject trench;
 
         if (raycastHit.collider != null && raycastHit.collider.CompareTag("Connection"))
         {
             var trenchComp = SelectedTrench.GetComponent<Trench>();
-
-            int rotationMod = rotation % trenchComp.ConnectionLength;
-
+            int rotationMod = rotIndex % trenchComp.ConnectionLength;
             var node = trenchComp.GetConnectionNode(rotationMod);
 
-            trench = Instantiate(SelectedTrench, raycastHit.collider.transform.position - Quaternion.AngleAxis(90 * rotationMod, Vector3.up) * node.position, raycastHit.collider.transform.parent.rotation * node.rotation);
+            var rot1 = raycastHit.collider.transform.parent.rotation;
+            var rot2 = raycastHit.collider.transform.localRotation;
+            var rot3 = Quaternion.AngleAxis(180, Vector3.up);
+            var rot4 = node.transform.rotation;
+            var newRotation = rot1 * Quaternion.Inverse(rot2 * rot3) * rot4;
+
+            trench = Instantiate(SelectedTrench, raycastHit.collider.transform.position - newRotation * node.transform.position, newRotation);
         }
         else
         {
-            trench = Instantiate(SelectedTrench, raycastHit.point /*+ new Vector3(0, 1, 0)*/, Quaternion.AngleAxis(90 * rotation, Vector3.up));
+            trench = Instantiate(SelectedTrench, raycastHit.point - new Vector3(0, .45f, 0), Quaternion.AngleAxis(90 * rotIndex, Vector3.up));
         }
 
         Bounds[] bounds = GetBounds(trench);

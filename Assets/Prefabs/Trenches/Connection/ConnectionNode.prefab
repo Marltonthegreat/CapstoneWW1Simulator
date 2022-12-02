@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6464752317350868349}
   - component: {fileID: 4532284194451658264}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ConnectionNode
   m_TagString: Connection
   m_Icon: {fileID: 0}
