@@ -14,8 +14,8 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
 
     public float scale = 20f;
 
-    public float offsetX = 100f;
-    public float offsetY = 100f;
+    [HideInInspector] public float offsetX = 100f;
+    [HideInInspector] public float offsetY = 100f;
 
     private void Start()
     {

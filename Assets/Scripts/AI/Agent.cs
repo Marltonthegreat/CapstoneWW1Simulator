@@ -112,7 +112,7 @@ public class Agent : MonoBehaviour
 
         stateMachine.AddTransition(typeof(OrderState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS, criticalHealth) }), typeof(IdleState).Name);
         stateMachine.AddTransition(typeof(OrderState).Name, new Transition(new Condition[] { new BoolCondition(hasOrder, false) }), typeof(IdleState).Name);
-        //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.GREATER, 30) }), typeof(ChaseState).Name);
+        stateMachine.AddTransition(typeof(OrderState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.GREATER, criticalHealth) }), typeof(ChaseState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new BoolCondition(enemySeen, true), new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 30) }), typeof(RetreatState).Name);
         //stateMachine.AddTransition(typeof(PatrolState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
 
@@ -205,14 +205,14 @@ public class Agent : MonoBehaviour
         }
     }
 
-    //private void OnGUI()
-    //{
-    //    Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
+    private void OnGUI()
+    {
+        Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
 
-    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
+        GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
     //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"Has Order: {hasOrder.value}");
     //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 20, 300, 20), $"health: {health.value}");
-    //}
+    }
 
     public static Agent[] GetAgents()
     {

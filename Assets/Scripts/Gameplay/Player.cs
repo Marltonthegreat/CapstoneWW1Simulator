@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject unitPrefab;
     [SerializeField] Transform spawnTransform;
 
+    private int rotation;
+
     [HideInInspector] public List<Order> StandingOrders;
     [HideInInspector] public List<Agent> Units;
 
@@ -56,10 +58,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
             {
-                TrenchManager.Instance.SpawnTrench(hitInfo);
+                TrenchManager.Instance.SpawnTrench(hitInfo, rotation);
                 PerlinTerrain.Instance.BuildNavMesh();
             }
         }
@@ -69,6 +71,11 @@ public class Player : MonoBehaviour
     {
         var go = Instantiate(unitPrefab, spawnTransform.position, spawnTransform.rotation);
         AddUnit(go.GetComponent<Agent>());
+    }
+
+    public void OnRotateTrench()
+    {
+        rotation = ++rotation % 4;
     }
 
     public void AddUnit(Agent unit)

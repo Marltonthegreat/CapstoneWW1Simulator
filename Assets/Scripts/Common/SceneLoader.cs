@@ -24,12 +24,12 @@ public class SceneLoader : MonoBehaviour
 		yield return new WaitUntil(() => screenFade.isDone);
 
 		// load scene
-		AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+		AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);	
 		asyncOperation.allowSceneActivation = false;
 		Pause.Instance.paused = false;
 
 		// show loading ui
-		loadingUI.SetActive(true);
+		loadingUI?.SetActive(true);
 
 		// update progress meter
 		while (asyncOperation.progress < 0.9f)
