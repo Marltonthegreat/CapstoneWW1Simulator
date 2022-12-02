@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 8190204489050954931}
   - component: {fileID: 1701292293792146170}
   - component: {fileID: 3527322020503566977}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Trench3Way
   m_TagString: Trench
   m_Icon: {fileID: 0}
@@ -164,8 +164,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 5, z: 4.7}
-  m_Center: {x: 0, y: 1, z: 0.119999886}
+  m_Size: {x: 8.1440525, y: 10, z: 4.7}
+  m_Center: {x: 0.018006325, y: 3.3500004, z: 0.119999886}
 --- !u!65 &1701292293792146170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -177,8 +177,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6, y: 5, z: 1.4000001}
-  m_Center: {x: 0, y: 1, z: 3.18}
+  m_Size: {x: 6, y: 10, z: 1.5800657}
+  m_Center: {x: 0, y: 3.3500004, z: 3.270033}
 --- !u!114 &3527322020503566977
 MonoBehaviour:
   m_ObjectHideFlags: 0

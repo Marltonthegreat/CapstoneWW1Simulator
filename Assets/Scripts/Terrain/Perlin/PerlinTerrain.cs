@@ -1,111 +1,59 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class PerlinTerrain : Singleton<PerlinTerrain>
 {
-    Terrain terrain;
+    MeshFilter meshFilter;
+    MeshCollider meshCollider;
     public Unity.AI.Navigation.NavMeshSurface surface;
 
-    public float height = 20f;
+    Vector3[] vertices;
 
+    public float height = 20f;
     public int width = 256;
     public int length = 256;
 
     public float scale = 20f;
 
-    [HideInInspector] public float offsetX = 100f;
-    [HideInInspector] public float offsetY = 100f;
+    private float offsetX = 100f;
+    private float offsetY = 100f;
 
     private void Start()
     {
         offsetX = Random.Range(-1000f, 1000);
         offsetY = Random.Range(-1000f, 1000);
 
-        terrain = GetComponent<Terrain>();
+        meshFilter = GetComponent<MeshFilter>();
+        meshCollider = GetComponent<MeshCollider>();
 
-        terrain.terrainData = GenerateTerrain(terrain.terrainData);
+        GenerateTerrain();
         BuildNavMesh();
     }
 
     public void AdjustTerrain(Bounds[] bounds)
     {
-        TerrainData data = terrain.terrainData;
+        var verts = meshFilter.mesh.vertices;
 
-        // get all vertices
-        float[,] heights = data.GetHeights(0, 0, data.heightmapResolution, data.heightmapResolution);
-        Vector3[,] worldPos = new Vector3[data.heightmapResolution, data.heightmapResolution]; ;
 
-        GetWorldPos(data, heights, ref worldPos);
-
-        int initX = -1, initZ = -1;
-        int finalX = -1, finalZ = -1;
-
-        for (int x = 0; x < data.heightmapResolution; x++)
+        for (int x = 0; x <= width; x++)
         {
-            for (int z = 0; z < data.heightmapResolution; z++)
+            for (int z = 0; z <= length; z++)
             {
                 foreach (Bounds bound in bounds)
                 {
-                    if (bound.Contains(worldPos[x, z]))
+                    if (bound.Contains(meshFilter.transform.position + verts[x * (width + 1) + z]))
                     {
-                        if (initX == -1 && initZ == -1)
-                        {
-                            initX = x;
-                            initZ = z;
-                        }
-
-                        worldPos[x, z] = new Vector3(worldPos[x, z].x, bound.min.y, worldPos[x, z].z);
-                        finalX = x;
-                        finalZ = z;
+                        verts[x * (width + 1) + z] = new Vector3(verts[x * (width + 1) + z].x, bound.min.y, verts[x * (width + 1) + z].z);
                     }
                 }
             }
         }
 
-        SetLocalHeights(data, ref heights, worldPos, initX, initZ, finalX, finalZ);
-
-        data.SetHeights(0, 0, heights);
-    }
-
-    private void GetWorldPos(TerrainData data, float[,] heights, ref Vector3[,] worldPos)
-    {
-        for (int x = 0; x < data.heightmapResolution; x++)
-        {
-            float relativePosX = x / (float)data.heightmapResolution;
-            float worldPosX = relativePosX * data.size.x + transform.position.x;
-
-            for (int z = 0; z < data.heightmapResolution; z++)
-            {
-                float relativePosZ = z / (float)data.heightmapResolution;
-
-                float worldPosZ = relativePosZ * data.size.z + transform.position.z;
-
-                float worldPosY = heights[x, z] * data.size.y + transform.position.y;
-
-                worldPos[x, z] = new Vector3(worldPosZ, worldPosY, worldPosX);
-            }
-        }
-    }
-
-    private void SetLocalHeights(TerrainData data, ref float[,] heights, Vector3[,] worldPos, int initX = 0, int initZ = 0, int finalX = -1, int finalZ = -1)
-    {
-        finalX = (finalX < 0) ? data.heightmapResolution : finalX;
-        finalZ = (finalZ < 0) ? data.heightmapResolution : finalZ;
-
-        for (int x = initX; x < data.heightmapResolution && x <= finalX; x++)
-        {
-            for (int z = initZ; z < data.heightmapResolution && x <= finalZ; z++)
-            {
-                float localHeight = (worldPos[x, z].y - transform.position.y) / data.size.y;
-                if (localHeight != heights[x, z])
-                {
-                    Debug.Log($"\nCoords: {x}, {z}\nWorldPos: {worldPos[x, z]}\nHeight Normalized: {heights[x, z]}\nHeight: {heights[x, z] * data.size.y + transform.position.y}");
-                    Debug.Log($"Height Normalized: {heights[x, z]}\nHeight: {heights[x, z] * data.size.y + transform.position.y}");
-                }
-                heights[x, z] = localHeight;
-            }
-        }
+        meshFilter.mesh.vertices = verts;
+        meshCollider.sharedMesh = meshFilter.mesh;
     }
 
     public void BuildNavMesh()
@@ -113,21 +61,51 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
         surface.BuildNavMesh();
     }
 
-
-    TerrainData GenerateTerrain(TerrainData terrainData)
+    private void GenerateTerrain()
     {
-        terrainData.heightmapResolution = width + 1;
-        terrainData.size = new Vector3(width, height, length);
+        vertices = new Vector3[(width + 1) * (length + 1)];
+        int[] triangles = new int[width * length * 6];
+        var heights = GenerateHeights();
 
-        terrainData.SetHeights(0, 0, GenerateHeights());
+        for (int x = 0; x <= width; x++)
+        {
+            for (int z = 0; z <= length; z++)
+            {
+                vertices[x * (width + 1) + z] = new Vector3(x, heights[x, z], z);
+            }
+        }
+
+        for (int x = 0, triIndex = 0, vertIndex = 0; x < width; x++, vertIndex++)
+        {
+            for (int y = 0; y < length; y++, triIndex += 6, vertIndex++)
+            {
+
+                triangles[triIndex] = vertIndex;
+                triangles[triIndex + 1] = vertIndex + 1;
+                triangles[triIndex + 2] = vertIndex + length + 1;
+
+                triangles[triIndex + 3] = triangles[triIndex + 2];
+                triangles[triIndex + 4] = triangles[triIndex + 1];
+                triangles[triIndex + 5] = vertIndex + length + 2;
+            }
+        }
 
 
-        return terrainData;
+        Mesh mesh = new Mesh();
+
+        meshFilter.mesh = mesh;
+        mesh.name = "terrain";
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
+
+        meshCollider.sharedMesh = mesh;
+
     }
 
     float[,] GenerateHeights()
     {
-        float[,] heights = new float[width, length];
+        float[,] heights = new float[width + 1, length + 1];
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < length; z++)
@@ -144,6 +122,6 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
         float xCoord = (float)x / width * scale + offsetX;
         float zCoord = (float)z / length * scale + offsetY;
 
-        return Mathf.PerlinNoise(xCoord, zCoord);
+        return Mathf.PerlinNoise(xCoord, zCoord) * height;
     }
 }

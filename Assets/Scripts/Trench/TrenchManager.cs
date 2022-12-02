@@ -125,7 +125,7 @@ public class TrenchManager : Singleton<TrenchManager>
         }
         else
         {
-            trench = Instantiate(SelectedTrench, raycastHit.point + new Vector3(0, 1, 0), Quaternion.AngleAxis(90 * rotation, Vector3.up));
+            trench = Instantiate(SelectedTrench, raycastHit.point /*+ new Vector3(0, 1, 0)*/, Quaternion.AngleAxis(90 * rotation, Vector3.up));
         }
 
         Bounds[] bounds = GetBounds(trench);

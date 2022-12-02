@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2184691155228650813, guid: 41a44453a45f8e1468f4eae79d47a329,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4932332901872895407, guid: 41a44453a45f8e1468f4eae79d47a329,
         type: 3}
       propertyPath: m_RootOrder
@@ -67,10 +72,20 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4f8bd03121c5b994c9725f5d5ff6bc15, type: 2}
+    - target: {fileID: 6707531240273029891, guid: 41a44453a45f8e1468f4eae79d47a329,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8153105657139394760, guid: 41a44453a45f8e1468f4eae79d47a329,
         type: 3}
       propertyPath: m_Name
-      value: Marker
+      value: MoveMarker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153105657139394760, guid: 41a44453a45f8e1468f4eae79d47a329,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41a44453a45f8e1468f4eae79d47a329, type: 3}

@@ -43,8 +43,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.11797, y: 2.5, z: 4.8}
-  m_Center: {x: 0.0000000665203, y: 0, z: 1.5}
+  m_Size: {x: 5.11797, y: 10, z: 4.8}
+  m_Center: {x: 0.0000000665203, y: 3.25, z: 1.5}
 --- !u!1 &2855289777446134508
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 1532741175014003125}
   - component: {fileID: 1702483965950354774}
   - component: {fileID: 7001561665058107512}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TrenchCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,8 +206,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 2.5, z: 5.3}
-  m_Center: {x: 0, y: 0, z: 1.2}
+  m_Size: {x: 5, y: 10, z: 5.3}
+  m_Center: {x: 0, y: 3.35, z: 1.2}
 --- !u!1001 &1121945617599464245
 PrefabInstance:
   m_ObjectHideFlags: 0

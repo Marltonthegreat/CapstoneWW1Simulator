@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 8264591399574877859}
   - component: {fileID: 2276355407726312707}
   - component: {fileID: 733632914122667088}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TrenchBunker
   m_TagString: Trench
   m_Icon: {fileID: 0}
