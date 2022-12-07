@@ -12,10 +12,12 @@ public class AttackState : State
     public override void OnEnter()
     {
         owner.movement.Stop();
-        owner.animator.SetTrigger("attack");
+        owner.animator.SetTrigger("Fire");
         owner.timer.value = owner.attackDelay;
 
-        //owner.GetComponent<AgentDamage>().Damage();
+        owner.transform.LookAt(owner.enemy.transform);
+
+        owner.enemy.GetComponent<Agent>().Damage(owner.attackDamage);
     }
 
     public override void OnExit()

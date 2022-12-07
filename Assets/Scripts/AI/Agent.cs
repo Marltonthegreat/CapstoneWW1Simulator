@@ -44,6 +44,7 @@ public class Agent : MonoBehaviour
 
     public float attackDistance = 5;
     public float attackDelay = 5;
+    public float attackDamage = 5;
 
     public int PlayerID;
     public int TeamID;
@@ -72,6 +73,7 @@ public class Agent : MonoBehaviour
         enemyHealth.value = (enemy != null) ? (enemy.GetComponent<Agent>().health) : 0f;
         enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
 
+        //get order
         if (!hasOrder && squad.isLeader) GetOrder();
         else if (atDestination) CompleteOrder();
 
@@ -122,6 +124,10 @@ public class Agent : MonoBehaviour
         ), typeof(IdleState).Name);
         stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
         (
+            new Condition[] { new BoolCondition(enemySeen, false), new BoolCondition(hasOrder, true) }
+        ), typeof(OrderState).Name);
+        stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
+        (
             new Condition[] { new FloatCondition(enemyDistance, Condition.Predicate.LESS_EQUAL, attackDistance), new FloatCondition(enemyHealth, Condition.Predicate.GREATER, 0) }
         ), typeof(AttackState).Name);
         stateMachine.AddTransition(typeof(ChaseState).Name, new Transition
@@ -146,14 +152,17 @@ public class Agent : MonoBehaviour
             new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }
         ), typeof(DeathState).Name);
 
-        stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(IdleState).Name);
+        stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.GREATER, criticalHealth) }), typeof(IdleState).Name);
         stateMachine.AddTransition(typeof(RetreatState).Name, new Transition(new Condition[] { new FloatCondition(health, Condition.Predicate.LESS_EQUAL, 0) }), typeof(DeathState).Name);
     }
 
     public void GetOrder()
     {
 
-        var playerOrders = GameManager.Instance.FindPlayerByID(PlayerID).StandingOrders;
+        var player = GameManager.Instance.FindPlayerByID(PlayerID);
+        if (player == null) return;
+
+        var playerOrders = player.StandingOrders;
 
         playerOrders = playerOrders.Where(o => !CompletedOrders.Contains(o)).ToList();
         if (playerOrders.Count == 0) return;
@@ -210,8 +219,13 @@ public class Agent : MonoBehaviour
         Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
 
         GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
-    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"Has Order: {hasOrder.value}");
-    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 20, 300, 20), $"health: {health.value}");
+        //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"Has Order: {hasOrder.value}");
+        //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 20, 300, 20), $"health: {health.value}");
+    }
+
+    public void Damage(float damage)
+    {
+        health.value -= damage;
     }
 
     public static Agent[] GetAgents()

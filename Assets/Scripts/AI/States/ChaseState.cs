@@ -13,7 +13,8 @@ public class ChaseState : State
 
     public override void OnUpdate()
     {
-        owner.movement.MoveTowards(owner.enemy.transform.position);
+        var position = owner.enemy.transform.position - (owner.attackDistance - .1f) * (owner.enemy.transform.position - owner.transform.position).normalized;
+        owner.movement.MoveTowards(position);
     }
 
     public override void OnExit()

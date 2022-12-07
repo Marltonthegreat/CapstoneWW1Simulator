@@ -23,9 +23,9 @@ public class RetreatState : State
 
     public override void OnUpdate()
     {
-        Vector3 direction = (owner.transform.position - owner.enemy.transform.position).normalized; 
+        //Vector3 direction = (owner.transform.position - owner.enemy.transform.position).normalized; 
 
-        owner.movement.MoveTowards(owner.transform.position + direction);
+        //owner.movement.MoveTowards(owner.transform.position + direction);
     }
 
     public override void OnExit()

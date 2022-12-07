@@ -12,7 +12,7 @@ public class DeathState : State
     public override void OnEnter()
     {
         owner.movement.Stop();
-        owner.animator.SetTrigger("death");
+        owner.animator.SetBool("Dead", true);
 
         GameObject.Destroy(owner.gameObject, 3);
     }

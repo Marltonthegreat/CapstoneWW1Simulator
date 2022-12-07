@@ -7,6 +7,7 @@ public class SphereCastPerception : Perception
     [SerializeField] Transform sphereCastTransform;
     [SerializeField] [Range(2, 50)] public int numRaycast = 2;
     [SerializeField] [Range(0, 5)] public float radius = 2;
+    [SerializeField] LayerMask layerMask;
 
     public override GameObject[] GetGameObjects()
     {
@@ -18,7 +19,7 @@ public class SphereCastPerception : Perception
             Quaternion rotation = Quaternion.AngleAxis(-angle + (angleOffset * i), Vector3.up);
             Vector3 direction = rotation * sphereCastTransform.forward;
             Ray ray = new Ray(sphereCastTransform.position, direction);
-            if (Physics.SphereCast(ray, radius, out RaycastHit raycastHit, distance))
+            if (Physics.SphereCast(ray, radius, out RaycastHit raycastHit, distance, layerMask))
             {
                 if (tagName == "" || raycastHit.collider.CompareTag(tagName))
                 {

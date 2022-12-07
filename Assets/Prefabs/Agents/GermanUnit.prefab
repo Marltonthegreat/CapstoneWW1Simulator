@@ -1885,13 +1885,14 @@ MonoBehaviour:
   health:
     value: 100
   criticalHealth:
-    value: 0
+    value: 25
   enemyHealth:
     value: 0
   timer:
     value: 0
   attackDistance: 5
-  attackDelay: 5
+  attackDelay: 1.5
+  attackDamage: 25
   PlayerID: 0
   TeamID: 0
 --- !u!95 &2807108986443394735
@@ -1980,8 +1981,11 @@ MonoBehaviour:
   distance: 40
   angle: 75
   sphereCastTransform: {fileID: 6781586676104776080}
-  numRaycast: 20
+  numRaycast: 40
   radius: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!136 &5500421569089501536
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -189,6 +189,8 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
         return verts;
     }
 
+
+
     Color[] ChangeColors(Color[] colors, Bounds bound, int index, int x, int z)
     {
         float r = 38 / 255f;
