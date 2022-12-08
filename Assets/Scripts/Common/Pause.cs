@@ -21,9 +21,9 @@ public class Pause : Singleton<Pause>
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            paused = !paused;
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    paused = !paused;
+        //}
     }
 }

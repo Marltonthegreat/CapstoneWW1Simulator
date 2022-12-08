@@ -1569,6 +1569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21adbd3850475c546bc81ce98a19f555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: d8e93c6be264acc4a98d5f712095e071, type: 3}
   movement: {fileID: 653215301307850148}
   animator: {fileID: 2807108986443394735}
   perception: {fileID: 653215301307850147}

@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
-public class PerlinTerrain : Singleton<PerlinTerrain>
+public class PerlinTerrain : MonoBehaviour
 {
+    [SerializeField] GameObject[] ObjsToAwake;
+
     MeshFilter meshFilter;
     MeshCollider meshCollider;
     public Unity.AI.Navigation.NavMeshSurface surface;
@@ -31,6 +33,7 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
 
         GenerateTerrain();
         BuildNavMesh();
+        Awaken(ObjsToAwake);
     }
 
     private void GenerateTerrain()
@@ -97,7 +100,7 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
                     {
                         verts = ChangeHeights(verts, bound, index, x, z);
 
-                        colors = ChangeColors(colors, bound, index, x, z);
+                        colors = ChangeColors(colors, index, x, z);
                     }
                 }
             }
@@ -111,7 +114,15 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
 
     public void BuildNavMesh()
     {
-        surface.BuildNavMesh();
+        surface?.BuildNavMesh();
+    }
+    
+    public void Awaken(GameObject[] objects)
+    {
+        foreach (var obj in objects)
+        {
+            obj.SetActive(true);
+        }
     }
 
     float[,] GenerateHeights()
@@ -167,23 +178,29 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
 
     Vector3[] ChangeHeights(Vector3[] verts, Bounds bound, int index, int x, int z)
     {
-        //var tempIndex = (x - 1) * (xSize) + z;
-        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+        var tempIndex = (x - 1) * (xSize) + z;
+        if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y <= bound.min.y)
+            verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
 
-        //tempIndex = (x + 1) * (xSize) + z;
-        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+        tempIndex = (x + 1) * (xSize) + z;
+        if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y <= bound.min.y) 
+            verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
 
-        //tempIndex = (x - 1) * (xSize) + z + 1;
-        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+        tempIndex = (x - 1) * (xSize) + z + 1;
+        if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y <= bound.min.y) 
+            verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
 
-        //tempIndex = (x + 1) * (xSize) + z + 1;
-        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+        tempIndex = (x + 1) * (xSize) + z + 1;
+        if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y <= bound.min.y) 
+            verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
 
-        //tempIndex = (x - 1) * (xSize) + z - 1;
-        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+        tempIndex = (x - 1) * (xSize) + z - 1;
+        if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y <= bound.min.y) 
+            verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
 
-        //tempIndex = (x + 1) * (xSize) + z - 1;
-        //if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y != bound.min.y) verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
+        tempIndex = (x + 1) * (xSize) + z - 1;
+        if (tempIndex > 0 && tempIndex < verts.Length && verts[tempIndex].y <= bound.min.y) 
+            verts[tempIndex] = new Vector3(verts[tempIndex].x, bound.min.y + bound.min.y / 2, verts[tempIndex].z);
 
         verts[index] = new Vector3(verts[index].x, bound.min.y, verts[index].z);
         return verts;
@@ -191,31 +208,33 @@ public class PerlinTerrain : Singleton<PerlinTerrain>
 
 
 
-    Color[] ChangeColors(Color[] colors, Bounds bound, int index, int x, int z)
+    Color[] ChangeColors(Color[] colors, int index, int x, int z)
     {
         float r = 38 / 255f;
         float g = 21 / 255f;
         float b = 6 / 255f;
 
-        var tempIndex = (x - 1) * (width + 1) + z;
-        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+        Color newColor = new Color(r, g, b);
 
-        tempIndex = (x + 1) * (width + 1) + z;
-        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+        var tempIndex = (x - 1) * (xSize) + z;
+        if (tempIndex > 0 && tempIndex < colors.Length && !colors[tempIndex].Equals(newColor)) colors[tempIndex] = newColor;
 
-        tempIndex = (x - 1) * (width + 1) + z + 1;
-        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+        tempIndex = (x + 1) * (xSize) + z;
+        if (tempIndex > 0 && tempIndex < colors.Length && !colors[tempIndex].Equals(newColor)) colors[tempIndex] = newColor;
 
-        tempIndex = (x + 1) * (width + 1) + z + 1;
-        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+        tempIndex = (x - 1) * (xSize) + z + 1;
+        if (tempIndex > 0 && tempIndex < colors.Length && !colors[tempIndex].Equals(newColor)) colors[tempIndex] = newColor;
 
-        tempIndex = (x - 1) * (width + 1) + z - 1;
-        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+        tempIndex = (x + 1) * (xSize) + z + 1;
+        if (tempIndex > 0 && tempIndex < colors.Length && !colors[tempIndex].Equals(newColor)) colors[tempIndex] = newColor;
 
-        tempIndex = (x + 1) * (width + 1) + z - 1;
-        if (tempIndex > 0 && tempIndex < colors.Length) colors[tempIndex] = new Color(r, g, b);
+        tempIndex = (x - 1) * (xSize) + z - 1;
+        if (tempIndex > 0 && tempIndex < colors.Length && !colors[tempIndex].Equals(newColor)) colors[tempIndex] = newColor;
 
-        colors[index] = new Color(r, g, b);
+        tempIndex = (x + 1) * (xSize) + z - 1;
+        if (tempIndex > 0 && tempIndex < colors.Length && !colors[tempIndex].Equals(newColor)) colors[tempIndex] = newColor;
+
+        colors[index] = newColor;
         return colors;
     }
 }

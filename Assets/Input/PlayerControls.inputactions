@@ -2,13 +2,22 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "OrdersMode",
+            "name": "Gameplay",
             "id": "dfe841d7-0140-40d8-9d89-b878bdeb8176",
             "actions": [
                 {
                     "name": "IssueCommand",
                     "type": "Button",
                     "id": "10354dac-a86b-483e-8e1d-6335cdd15e19",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "11f49d20-8676-4475-bd67-c44674565193",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -24,9 +33,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SetMode",
+                    "name": "ToggleOrderBuild",
                     "type": "Button",
                     "id": "5f2116d9-3f16-422b-b304-686b43f9a7a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleArtillery",
+                    "type": "Button",
+                    "id": "5dca51e4-96ec-40e4-9f24-78038031ed6d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -51,9 +69,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SpawnUnit",
+                    "name": "SpawnBritishUnit",
                     "type": "Button",
                     "id": "06ad71bb-6740-4832-a8ae-7c8c80edc002",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnGermanUnit",
+                    "type": "Button",
+                    "id": "5b91b34e-9b51-4dea-bb0f-c0dbcfb99d4e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -99,7 +126,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SetMode",
+                    "action": "ToggleOrderBuild",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -176,7 +203,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpawnUnit",
+                    "action": "SpawnBritishUnit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -188,6 +215,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateTrench",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33ad6905-1772-476d-b8ed-5ef0cb747720",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "ToggleArtillery",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9cfa118e-12f2-4b4d-8afd-379c7cb0714a",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "SpawnGermanUnit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24e4caed-fbba-45bf-a4d0-069d073d14b4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseKeyboard",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -21,13 +21,6 @@ public class ScreenFade : MonoBehaviour
         }
     }
 
-	private void Update()
-	{
-        // only used for debugging
-		if (Input.GetKeyDown(KeyCode.UpArrow)) FadeIn();
-		if (Input.GetKeyDown(KeyCode.DownArrow)) FadeOut();
-    }
-
     public void FadeIn()
 	{
         StartCoroutine(FadeRoutine(startColor, endColor, time));

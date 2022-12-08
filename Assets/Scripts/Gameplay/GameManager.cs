@@ -14,8 +14,10 @@ public class GameManager : Singleton<GameManager>
     }
 
     public OrderType CurrentOrderType { get; private set; }
-    [HideInInspector] public List<Player> players = new();
+    private List<Player> players = new();
     [HideInInspector] public List<Order> AllStandingOrders = new();
+
+    [SerializeField] SceneLoader sceneLoader;
 
     [SerializeField] GameObject MoveMarkerPrefab;
     [SerializeField] GameObject AttackMarkerPrefab;
@@ -29,15 +31,15 @@ public class GameManager : Singleton<GameManager>
         {
             case OrderType.Move:
                 order = new MoveOrder("MoveOrder1", MoveMarkerPrefab, location, 0);
-                players[0].AddOrder(order);
+                players[1].AddOrder(order);
                 break;
             case OrderType.Attack:
                 order = new AttackOrder("AttackOrder1", AttackMarkerPrefab, location, 0);
-                players[0].AddOrder(order);
+                players[1].AddOrder(order);
                 break;
             case OrderType.Retreat:
                 order = new RetreatOrder("RetreatOrder1", RetreatMarkerPrefab, location, 0);
-                players[0].AddOrder(order);
+                players[1].AddOrder(order);
                 break;
             default:
                 break;
@@ -67,8 +69,19 @@ public class GameManager : Singleton<GameManager>
         CurrentOrderType = type;
     }
 
+    public void OnLoadScene(string sceneName)
+    {
+        sceneLoader.Load(sceneName);
+    }
+
     public Player FindPlayerByID(int ID)
     {
         return players.FirstOrDefault(p => p.PlayerID == ID);
+    }
+
+    public void AddPlayer(Player player)
+    {
+        player.TeamID = player.PlayerID = players.Count();
+        players.Add(player);
     }
 }

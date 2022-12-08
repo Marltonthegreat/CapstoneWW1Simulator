@@ -7,16 +7,26 @@ public class Agent : MonoBehaviour
 {
     private struct Squad
     {
-        public bool isLeader;
-
         public Agent squadLeader;
+        public Agent[] subordinates;
+
+        //public delegate void 
 
         public delegate void IssueOrder(Order order);
         public event IssueOrder issueOrder;
+        
         public Order standingOrder;
 
-        public int squadSize;
-        public static int MAX_SQUAD_SIZE = 5;
+        public int subCount;
+
+        public Squad(Agent squadLeader)
+        {
+            this.squadLeader = squadLeader;
+            subordinates = new Agent[4];
+            issueOrder = null;
+            standingOrder = null;
+            subCount = 0;
+        }
 
         public void IssueOrderToMembers(Order order)
         {
@@ -24,6 +34,8 @@ public class Agent : MonoBehaviour
             issueOrder(order);
         }
     }
+
+    [SerializeField] AudioClip clip;
 
     public AgentMovement movement;
     public Animator animator;
@@ -74,7 +86,7 @@ public class Agent : MonoBehaviour
         enemyDistance.value = (enemy != null) ? (Vector3.Distance(transform.position, enemy.transform.position)) : float.MaxValue;
 
         //get order
-        if (!hasOrder && squad.isLeader) GetOrder();
+        if (!hasOrder && squad.squadLeader != null && squad.squadLeader.Equals(this)) GetOrder();
         else if (atDestination) CompleteOrder();
 
         timer.value -= Time.deltaTime;
@@ -197,20 +209,20 @@ public class Agent : MonoBehaviour
     public void SetSquadLeader()
     {
         var units = GameManager.Instance.FindPlayerByID(PlayerID).Units;
-        var leader = units.FirstOrDefault(u => u.squad.isLeader && u.squad.squadSize != Squad.MAX_SQUAD_SIZE);
+        var leader = units.FirstOrDefault(u => u.squad.squadLeader != null && u.squad.squadLeader.Equals(u) && u.squad.subordinates[3] != null);
 
         if (leader == null)
         {
-            squad.isLeader = true;
-            squad.squadSize++;
+            squad = new Squad(this);
             squad.issueOrder += SetOrder;
         }
         else
         {
-            squad.squadLeader = leader;
-            leader.squad.squadSize++;
+            leader.squad.subordinates[leader.squad.subCount++] = this;
             leader.squad.issueOrder += SetOrder;
-            SetOrder(leader.squad.standingOrder);
+            squad = leader.squad;
+
+            SetOrder(squad.standingOrder);
         }
     }
 
@@ -226,6 +238,11 @@ public class Agent : MonoBehaviour
     public void Damage(float damage)
     {
         health.value -= damage;
+    }
+
+    public void PlayShootSFX()
+    {
+        AudioManager.Instance.PlaySFX(clip);
     }
 
     public static Agent[] GetAgents()

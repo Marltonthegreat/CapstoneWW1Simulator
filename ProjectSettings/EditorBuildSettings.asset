@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/DepreciatedTerrainScene.unity
-    guid: 8124e5870f4fd4c779e7a5f994e84ad1
+    path: Assets/Scenes/MainMenu.unity
+    guid: ecded77c9e8d7404f98c996e215ba400
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: 37138af19301b4d4f9c62395b898918f
+  - enabled: 1
+    path: Assets/Scenes/GameBase.unity
+    guid: 390079e83fe041648a1af2b3d0a60956
   m_configObjects: {}

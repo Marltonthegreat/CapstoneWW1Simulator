@@ -18,6 +18,8 @@ public class TrenchManager : Singleton<TrenchManager>
         Straight
     }
 
+    public PerlinTerrain PTerrain;
+
     private List<Trench> SpawnedTrenches;
 
     [SerializeField] TrenchType SelectedTrenchType = TrenchType.Straight;
@@ -134,10 +136,10 @@ public class TrenchManager : Singleton<TrenchManager>
 
         Bounds[] bounds = GetBounds(trench);
 
-        PerlinTerrain.Instance.AdjustTerrain(bounds);
+        PTerrain.AdjustTerrain(bounds);
     }
 
-    private Bounds[] GetBounds(GameObject go)
+    public Bounds[] GetBounds(GameObject go)
     {
         List<Bounds> bounds = new();
         List<BoxCollider> colliders = new();

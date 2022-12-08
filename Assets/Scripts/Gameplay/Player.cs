@@ -12,9 +12,20 @@ public class Player : MonoBehaviour
         TeamID = teamID;
     }
 
+    [Header("British Units")]
+    [SerializeField] GameObject britishPrefab;
+    [SerializeField] Transform britishSpawnTransform;
+
+    [Header("German Units")]
+    [SerializeField] GameObject germanPrefab;
+    [SerializeField] Transform germanSpawnTransform;
+
+    [Header("Projectile")]
+    [SerializeField] GameObject ProjectilePrefab;
+
+
+    [Header("Other")]
     [SerializeField] LayerMask layerMask;
-    [SerializeField] GameObject unitPrefab;
-    [SerializeField] Transform spawnTransform;
 
     private int rotation;
 
@@ -23,17 +34,19 @@ public class Player : MonoBehaviour
 
     private Vector2 camMovement;
 
-    public int PlayerID { get; }
-    public int TeamID { get; }
+    public int PlayerID { get; set; }
+    public int TeamID { get; set; }
 
-    private bool BuildMode = true;
+    private bool BuildMode = false;
+
+    private bool ArtilleryMode = false;
 
     private void Start()
     {
         StandingOrders = new();
         Units = new();
 
-        GameManager.Instance.players.Add(this);
+        GameManager.Instance.AddPlayer(this);
     }
 
     private void FixedUpdate()
@@ -46,11 +59,24 @@ public class Player : MonoBehaviour
         camMovement = value.Get<Vector2>();
     }
 
-    public void OnIssueCommand()
+    public void OnFire()
     {
-        if (!BuildMode)
+        if (ArtilleryMode)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100))
+            {
+                Instantiate(ProjectilePrefab, hitInfo.point + new Vector3(0, transform.position.y), transform.rotation);
+            }
+        }
+    }
+
+    public void OnIssueCommand()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (!BuildMode)
+        {
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
             {
                 GameManager.Instance.CreateOrder(hitInfo.point);
@@ -58,19 +84,26 @@ public class Player : MonoBehaviour
         }
         else
         {
-                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask))
             {
                 TrenchManager.Instance.SpawnTrench(hitInfo, rotation);
-                PerlinTerrain.Instance.BuildNavMesh();
+                TrenchManager.Instance.PTerrain.BuildNavMesh();
             }
         }
     }
 
-    public void OnSpawnUnit()
+    public void OnSpawnBritishUnit()
     {
-        var go = Instantiate(unitPrefab, spawnTransform.position, spawnTransform.rotation);
+        var go = Instantiate(britishPrefab, britishSpawnTransform.position, britishSpawnTransform.rotation);
         AddUnit(go.GetComponent<Agent>());
+    }
+
+    public void OnSpawnGermanUnit()
+    {
+        var go = Instantiate(germanPrefab, germanSpawnTransform.position, germanSpawnTransform.rotation);
+        var otherPlayer = GameManager.Instance.FindPlayerByID((PlayerID == 0) ? 1 : 0);
+
+        otherPlayer.AddUnit(go.GetComponent<Agent>(), otherPlayer.TeamID, otherPlayer.PlayerID);
     }
 
     public void OnRotateTrench()
@@ -83,6 +116,13 @@ public class Player : MonoBehaviour
         if (!Units.Contains(unit)) Units.Add(unit);
         unit.TeamID = TeamID;
         unit.PlayerID = PlayerID;
+    }
+
+    public void AddUnit(Agent unit, int teamID, int playerID)
+    {
+        if (!Units.Contains(unit)) Units.Add(unit);
+        unit.TeamID = teamID;
+        unit.PlayerID = playerID;
     }
 
     public void AddUnits(List<Agent> units)
@@ -109,8 +149,14 @@ public class Player : MonoBehaviour
     {
         StandingOrders.Remove(order);
     }
-    public void OnSetMode()
+
+    public void OnToggleOrderBuild()
     {
         BuildMode = !BuildMode;
+    }
+
+    public void OnToggleArtillery()
+    {
+        ArtilleryMode = !ArtilleryMode;
     }
 }
