@@ -55,8 +55,9 @@ public class Projectile : MonoBehaviour
             else if (hit && collider.CompareTag("Terrain"))
             {
                 Bounds[] bounds = new Bounds[1]; 
-                bounds[0] = new Bounds(transform.position, new Vector3(explosionRadius, explosionRadius, explosionRadius));
+                bounds[0] = new Bounds(transform.position, new Vector3(explosionRadius, explosionRadius/2, explosionRadius));
                 TrenchManager.Instance.PTerrain.AdjustTerrain(bounds);
+                TrenchManager.Instance.PTerrain.BuildNavMesh();
             }
         }
 

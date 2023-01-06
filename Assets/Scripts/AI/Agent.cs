@@ -226,14 +226,14 @@ public class Agent : MonoBehaviour
         }
     }
 
-    private void OnGUI()
-    {
-        Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
+    //private void OnGUI()
+    //{
+    //    Vector2 screen = Camera.main.WorldToScreenPoint(transform.position);
 
-        GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
-        //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"Has Order: {hasOrder.value}");
-        //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 20, 300, 20), $"health: {health.value}");
-    }
+    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y, 300, 20), stateMachine.GetStateName());
+    //    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 10, 300, 20), $"Has Order: {hasOrder.value}");
+    //    //    GUI.Label(new Rect(screen.x, Screen.height - screen.y - 20, 300, 20), $"health: {health.value}");
+    //}
 
     public void Damage(float damage)
     {
